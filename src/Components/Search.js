@@ -10,7 +10,7 @@ function Search({isSearchInputOpen}) {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 5, color:'#807D7E'}}>
+    <Container maxWidth="md" sx={{ mt: 5, color:'#807D7E', zIndex: 100}}>
       <TextField
         id="search"
         type="search"
