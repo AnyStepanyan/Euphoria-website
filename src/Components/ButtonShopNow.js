@@ -26,13 +26,12 @@ function ButtonShopNow() {
                     fontSize: 12,
                 },
                 '@media (max-width: 500px)': {
-                    marginTop: 3,
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                    paddingTop: 1.1,
-                    paddingBottom: 1.1,
-                    fontSize: 15,
-    
+                    marginTop: 0,
+                    paddingLeft: 2,
+                    paddingRight: 2,
+                    paddingTop: 0.6,
+                    paddingBottom: 0.6,
+                    fontSize: 9
                 }
             }}
         >
