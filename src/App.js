@@ -1,6 +1,7 @@
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import DemoCarousel from "./Components/SectionOneCarousel";
+import SectionThree from "./Components/SectionThree";
 
 
 
@@ -9,6 +10,7 @@ function App() {
     <>
     <Header />
     <DemoCarousel />
+    <SectionThree />
     <Footer />
     </>
   );

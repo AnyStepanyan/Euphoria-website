@@ -9,16 +9,21 @@ import ButtonShopNow from "./ButtonShopNow";
 const useStyles = createUseStyles({
     carouselWrapper: {
         maxWidth: 1440,
+        maxHeight: '80%',
         margin: {
             left: 'auto',
             right: 'auto',
             top: 5,
+            bottom: 0
         },
-        '@media (max-width: 500px)': {
-           maxWidth: 500,
-           height: 350,
-           overflow: 'hidden'
-        }
+        '& ul': {
+            margin: 0,
+        },
+        // '@media (max-width: 500px)': {
+        //    maxWidth: 500,
+        //    height: 350,
+        //    overflow: 'hidden'
+        // }
      
     },
     slide: {
@@ -28,19 +33,12 @@ const useStyles = createUseStyles({
             width: 439,
             left: 200,
             top: 60,
-            margin: 10,
             textAlign: 'left',
             '@media (max-width: 1200px)': {
                 width: "36vw",
                 left: '12vw',
                 top: '5vw',
             },
-            '@media (max-width: 500px)': {
-                width: 290,
-                left: '10%',
-                top: '1%',
-
-            }
         },
         '&  p': {
             fontSize: 32,
@@ -48,9 +46,6 @@ const useStyles = createUseStyles({
             '@media (max-width: 1200px)': {
                 fontSize: '2.6vw',
             },
-            '@media (max-width: 500px)': {
-                fontSize: 20,
-            }
         },
         '&  h6': {
             fontSize: 75,
@@ -60,23 +55,12 @@ const useStyles = createUseStyles({
             '@media (max-width: 1200px)': {
                 fontSize: '6vw',
             },
-            '@media (max-width: 500px)': {
-                fontSize: 35,
-            }
         }
     },
     banner: {
-        
             width: '100%',
             height: '100%',
-            '@media (max-width: 500px)': {
-                width: 1000,
-                height:'100%',
-                backgroundRepeat: 'no-repeat',
-                overflow: 'hidden'
-            }
-       
- 
+            margin: 0,
     }
 })
 
