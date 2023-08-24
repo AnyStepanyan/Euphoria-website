@@ -1,11 +1,6 @@
-// import Header from "./Components/Header";
-// import Footer from "./Components/Footer";
-// import DemoCarousel from "./Components/SectionOneCarousel";
-// import NavBar from "./layouts/NavBar";
-import Login from "./authentication/Login";
-import SignUp from "./authentication/SignUp";
-import { useState } from "react";
-
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import DemoCarousel from "./Components/SectionOneCarousel";
 
 
 
@@ -19,6 +14,7 @@ function App() {
     <>
     {/* <Header />
     <DemoCarousel />
+    <SectionThree />
     <Footer />
     <NavBar /> */}
     {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)}
