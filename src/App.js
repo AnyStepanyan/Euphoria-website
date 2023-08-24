@@ -1,17 +1,23 @@
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import DemoCarousel from "./Components/SectionOneCarousel";
-import SectionThree from "./Components/SectionThree";
 
 
 
 function App() {
+  const [user, setUser] = useState("");
+  const [toggleForm, setToggleForm] = useState(true);
+  const formMode = () => {
+    setToggleForm(!toggleForm);
+  }
   return (
     <>
-    <Header />
+    {/* <Header />
     <DemoCarousel />
     <SectionThree />
     <Footer />
+    <NavBar /> */}
+    {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)}
     </>
   );
 }
