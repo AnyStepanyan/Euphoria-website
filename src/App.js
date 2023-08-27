@@ -1,12 +1,16 @@
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import DemoCarousel from "./Components/SectionOneCarousel";
-<<<<<<< HEAD
+// <<<<<<< HEAD
 import SectionThree from "./Components/SectionThree";
 import HomeManCategory from "./Components/HomeManCategory";
-=======
+import { useState } from "react";
+import Login from './authentication/Login'
+import SignUp from './authentication/SignUp'
 
->>>>>>> 3d0cc93ddcdcd070ebe1a8eb997a944e21fab446
+// =======
+
+// >>>>>>> 3d0cc93ddcdcd070ebe1a8eb997a944e21fab446
 
 
 function App() {
@@ -17,12 +21,12 @@ function App() {
   }
   return (
     <>
-    {/* <Header />
+    <Header />
     <DemoCarousel />
     <SectionThree />
     <HomeManCategory />
     <Footer />
-    <NavBar /> */}
+    {/* <NavBar /> */}
     {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)}
     </>
   );

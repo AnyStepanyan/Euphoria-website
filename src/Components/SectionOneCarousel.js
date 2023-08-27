@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
             left: 'auto',
             right: 'auto',
             top: 5,
-            bottom: 0
+            bottom: 30
         },
         '& ul': {
             margin: 0,
@@ -73,6 +73,7 @@ function DemoCarousel() {
             className={classes.carouselWrapper}
             showArrows={true}
             showStatus={false}
+            showThumbs={false}
             autoPlay
             infiniteLoop
         >
