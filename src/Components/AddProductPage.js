@@ -17,12 +17,18 @@ import Container from "@mui/material/Container";
 const firestore = firebase.firestore();
 
 const colors = [
-  { value: "#FF5733", selected: false },
-  { value: "#33FF57", selected: false },
-  { value: "#5733FF", selected: false },
-  { value: "#FFFF33", selected: false },
-  { value: "#33FFFF", selected: false },
-  { value: "#FF33FF", selected: false },
+  { value: "#000000", selected: false },
+  { value: "#969696", selected: false },
+  { value: "#ffffff", selected: false },
+  { value: "#ff5722", selected: false },
+  { value: "#fbc02d", selected: false },
+  { value: "#388e3c", selected: false },
+  { value: "#00bcd4", selected: false },
+  { value: "#3f51b5", selected: false },
+  { value: "#673ab7", selected: false },
+  { value: "#e91e63", selected: false },
+  { value: "#ff1100", selected: false },
+  { value: "#8b572a", selected: false },
 ];
 
 const AddProductPage = () => {
@@ -68,34 +74,44 @@ const AddProductPage = () => {
   };
 
   const handleAddProduct = () => {
-    const image = images[0];
-
-    if (!category || !image) {
-      console.error("Select a category and add an image");
+    if (!category || images.length === 0) {
+      console.error("Select a category and add at least one image");
       return;
     }
 
-    const storageRef = firebase.storage().ref(`images/${image.name}`);
+    const storagePromises = [];
 
-    storageRef
-      .put(image)
-      .then((snapshot) => {
-        return snapshot.ref.getDownloadURL();
-      })
-      .then((imageUrl) => {
-        console.log("selectedSizes", selectedSizes);
-        return firestore.collection("products").add({
+    images.forEach((image) => {
+      const storageRef = firebase.storage().ref(`images/${image.name}`);
+      const uploadTask = storageRef.put(image);
+
+      const uploadPromise = uploadTask
+        .then((snapshot) => snapshot.ref.getDownloadURL())
+        .catch((error) => {
+          console.error("Image upload error: ", error);
+          throw error;
+        });
+
+      storagePromises.push(uploadPromise);
+    });
+
+    Promise.all(storagePromises)
+      .then((imageUrls) => {
+        const mainImageUrl = imageUrls[0];
+        const productData = {
           name: productName,
           price: parseInt(productPrice),
           category: category,
           color: selectedColors,
           gender: gender,
           size: selectedSizes,
-          imageUrl: imageUrl,
-        });
+          mainImageUrl: mainImageUrl,
+          imageUrls: imageUrls,
+        };
+        return firestore.collection("products").add(productData);
       })
       .then(() => {
-        console.log("Product added");
+        console.log("Products added");
         setProductName("");
         setProductPrice("");
         setCategory("");
@@ -120,7 +136,7 @@ const AddProductPage = () => {
             startIcon={<UploadFileIcon />}
             sx={{ marginRight: "1rem" }}
           >
-            Upload CSV
+            Upload Image
             <input
               ref={imageInputRef}
               type="file"
@@ -135,10 +151,7 @@ const AddProductPage = () => {
           </Button>
         </div>
         {images.map((image) => (
-          <span>
-            {image.name}
-            {"  "}
-          </span>
+          <span key={image.name}>{"  "}</span>
         ))}
       </div>
       <TextField

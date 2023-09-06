@@ -25,14 +25,15 @@ const PriceFilter = ({ onApplyFilter }) => {
       container
       spacing={2}
       style={{
-        width: "300px",
         flex: "0 0 300px",
         padding: "5px",
         marginRight: "32px",
+        height: "100%",
       }}
     >
       <Grid item xs={12} sm={6}>
         <TextField
+          style={{ height: "50px" }}
           label="Min Price"
           type="number"
           value={minPrice}

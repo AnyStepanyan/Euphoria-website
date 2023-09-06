@@ -17,6 +17,8 @@ const ColorPicker = ({ selectedColors, handleColorSelect }) => {
                 backgroundColor: color.value,
                 cursor: "pointer",
                 position: "relative",
+                borderRadius: "50%",
+                border: "2px solid black",
               }}
               onClick={() => handleColorSelect(color)}
             >

@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Grid from "@mui/material/Grid";
 
-const sizes = ["xs", "s", "M", "l", "xl"];
+const sizes = ["xs", "s", "m", "l", "xl"];
 
 const SizeSelector = ({ selectedSizes, handleSizeChange }) => {
   return (

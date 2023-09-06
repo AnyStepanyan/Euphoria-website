@@ -11,6 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PriceFilter from "./PriceFilter";
 import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
@@ -39,7 +40,7 @@ const Content = styled(CardContent)`
   object-position: center;
   display: flex;
   flex-direction: column;
-  alignitems: center;
+  align-items: center;
   flex: 1 0 auto;
 `;
 
@@ -48,6 +49,7 @@ const firestore = firebase.firestore();
 const WomenProductList = () => {
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
+  const [cart, setCart] = useState([]);
 
   const handleToggleFavorite = (productId) =>
     setFavorites((previousFavorites) =>
@@ -55,6 +57,16 @@ const WomenProductList = () => {
         ? previousFavorites.filter((id) => id !== productId)
         : [...previousFavorites, productId]
     );
+
+  const handleToggleCart = (productId) => {
+    setCart((previousToCart) => {
+      if (previousToCart.includes(productId)) {
+        return previousToCart;
+      } else {
+        return [...previousToCart, productId];
+      }
+    });
+  };
 
   const {
     data: productsList,
@@ -94,11 +106,11 @@ const WomenProductList = () => {
           <div>Loading ...</div>
         ) : (
           productsList.map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={4}>
+            <Grid key={product.id} item xs={12} sm={6} md={3}>
               <RootCard>
                 <MediaImage
                   component="img"
-                  image={product.imageUrl}
+                  image={product.mainImageUrl}
                   alt={product.name}
                 />
                 <Content>
@@ -119,6 +131,13 @@ const WomenProductList = () => {
                     onClick={() => handleToggleFavorite(product.id)}
                   >
                     <FavoriteIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Add to cart"
+                    color={cart.includes(product.id) ? "primary" : "default"}
+                    onClick={() => handleToggleCart(product.id)}
+                  >
+                    <ShoppingCartIcon />
                   </IconButton>
                 </Content>
               </RootCard>
