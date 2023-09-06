@@ -5,11 +5,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+<<<<<<< HEAD
     "firebase": "^10.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,6 +23,19 @@
     "react-star-rating-component": "^1.4.1",
     "styled-components": "^6.0.6",
     "uuid": "^9.0.0",
+=======
+    "firebase": "^10.3.0",
+    "material-ui-phone-number": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.46.0",
+    "react-jss": "^10.10.0",
+    "react-material-ui-form-validator": "^3.0.1",
+    "react-responsive-carousel": "^3.2.23",
+    "react-scripts": "5.0.1",
+    "react-slick": "^0.29.0",
+    "react-toastify": "^9.1.3",
+>>>>>>> 86793ffb229cc3c98e4b97c3dfae7b11c1e8ce2a
     "web-vitals": "^2.1.0"
   },
   "scripts": {
