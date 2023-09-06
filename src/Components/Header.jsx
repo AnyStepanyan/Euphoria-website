@@ -8,7 +8,6 @@ import BurgerMenu from "./BurgerMenu";
 import { ReactComponent as Logo } from "../Assets/images/logo.svg";
 import { createUseStyles } from 'react-jss';
 import { useEffect, useState } from 'react';
-import NavBarMobile from "./NavBarMobile";
 
 
 const useStyles = createUseStyles({
@@ -20,24 +19,23 @@ const useStyles = createUseStyles({
             right: 'auto',
             top: 17,
         },
-        // padding: {
-        //     left: 10,
-        // },
+        padding: {
+            left: 10,
+        },
         justifyContent: 'center',
     },
-    
     logo: {
         minWidth: 93,
         minHeight: 45,
         margin: {
             top: 14,
-            left: 10
+            left: 5
         },
         cursor: 'pointer',
         '@media (max-width: 640px)': {
             margin: {
                 top: 14,
-                left: 43
+                left: 40
             },
         }
     },
@@ -45,7 +43,8 @@ const useStyles = createUseStyles({
         display: 'flex',
         margin: {
             top: 23,
-            right: 10
+            right: 20,
+            left: 20,
         }
     }
 })
@@ -74,9 +73,8 @@ function Header() {
             <div className={classes.headerWrapper}>
                 <BurgerMenu onClick = {toggleMenu} isBurgerOpen={isBurgerOpen}/>
                 <Logo className={classes.logo} />
-                <NavBar/>
+                <NavBar isBurgerOpen={isBurgerOpen} />
                 <Search   isSearchInputOpen={isSearchInputOpen} />
-                <NavBarMobile onClick={toggleMenu} isBurgerOpen={isBurgerOpen} />
 
 
 
