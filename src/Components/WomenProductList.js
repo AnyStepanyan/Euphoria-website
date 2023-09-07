@@ -91,10 +91,10 @@ const WomenProductList = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log("Результаты запроса:", productsData); // Посмотрите результаты запроса
+        console.log("result:", productsData);
         setProducts(productsData);
       } catch (error) {
-        console.error("Ошибка при загрузке продуктов:", error);
+        console.error("product add error:", error);
       }
     };
 

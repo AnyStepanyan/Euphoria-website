@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useRef } from "react";
 import { firebase } from "../helpers/db";
 import "firebase/compat/firestore";
@@ -17,18 +18,18 @@ import Container from "@mui/material/Container";
 const firestore = firebase.firestore();
 
 const colors = [
-  { value: "#000000", selected: false },
-  { value: "#969696", selected: false },
-  { value: "#ffffff", selected: false },
-  { value: "#ff5722", selected: false },
-  { value: "#fbc02d", selected: false },
-  { value: "#388e3c", selected: false },
-  { value: "#00bcd4", selected: false },
-  { value: "#3f51b5", selected: false },
-  { value: "#673ab7", selected: false },
-  { value: "#e91e63", selected: false },
-  { value: "#ff1100", selected: false },
-  { value: "#8b572a", selected: false },
+  { value: "#000000", label: "Black", selected: false },
+  { value: "#969696", label: "Gray", selected: false },
+  { value: "#ffffff", label: "White", selected: false },
+  { value: "#ff5722", label: "Orange", selected: false },
+  { value: "#fbc02d", label: "Yellow", selected: false },
+  { value: "#388e3c", label: "Green", selected: false },
+  { value: "#00bcd4", label: "Cyan", selected: false },
+  { value: "#3f51b5", label: "Blue", selected: false },
+  { value: "#673ab7", label: "Purple", selected: false },
+  { value: "#e91e63", label: "Pink", selected: false },
+  { value: "#ff1100", label: "Red", selected: false },
+  { value: "#8b572a", label: "Brown", selected: false },
 ];
 
 const AddProductPage = () => {
@@ -126,7 +127,10 @@ const AddProductPage = () => {
   };
 
   return (
-    <Container maxWidth="sm" style={{ textAlign: "center" }}>
+    <Container
+      maxWidth="sm"
+      style={{ backgroundColor: "", textAlign: "center" }}
+    >
       <h1>Product Management</h1>
       <div>
         <div>

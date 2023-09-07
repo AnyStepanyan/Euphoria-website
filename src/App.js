@@ -8,6 +8,8 @@ import { auth } from "./helpers/db";
 import { useRequest } from "ahooks";
 import AddProductPage from "./Components/AddProductPage";
 import WomenProductList from "./Components/WomenProductList";
+// import NavBar from "./Components/NavBar";
+// import SectionThree from "./Components/SectionThree";
 
 export const AuthContext = createContext();
 
@@ -88,8 +90,11 @@ function App() {
     <>
       <AuthProvider>
         <Header />
-        <Link to="/womenProducts" style={{ padding: 5 }}>
+        <Link to="/womenProducts" style={{ padding: "15px" }}>
           Products
+        </Link>
+        <Link to="/addProduct" state={{ padding: "15px" }}>
+          Add Product
         </Link>
         <AppRoutes />
         {/* 

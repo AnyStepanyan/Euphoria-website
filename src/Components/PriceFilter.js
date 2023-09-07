@@ -33,7 +33,6 @@ const PriceFilter = ({ onApplyFilter }) => {
     >
       <Grid item xs={12} sm={6}>
         <TextField
-          style={{ height: "50px" }}
           label="Min Price"
           type="number"
           value={minPrice}

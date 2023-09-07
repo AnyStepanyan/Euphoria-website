@@ -10,21 +10,21 @@ const Category = ({ category, setCategory }) => {
       <InputLabel>Choose Category</InputLabel>
       <Select value={category} onChange={(e) => setCategory(e.target.value)}>
         <MenuItem value="">Choose Category</MenuItem>
-        <MenuItem value="category1">T-Shirt</MenuItem>
-        <MenuItem value="category2">Jeans</MenuItem>
-        <MenuItem value="category3">Pants</MenuItem>
-        <MenuItem value="category4">Hoodie</MenuItem>
-        <MenuItem value="category5">Sweater</MenuItem>
-        <MenuItem value="category6">Jacket</MenuItem>
-        <MenuItem value="category7">Dress</MenuItem>
-        <MenuItem value="category8">Shorts</MenuItem>
-        <MenuItem value="category9">Skirts</MenuItem>
-        <MenuItem value="category10">Blouse</MenuItem>
-        <MenuItem value="category11">Top</MenuItem>
-        <MenuItem value="category12">Coat</MenuItem>
-        <MenuItem value="category13">Hat</MenuItem>
-        <MenuItem value="category14">Glove</MenuItem>
-        <MenuItem value="category15">Shirt</MenuItem>
+        <MenuItem value="T-Shirt">T-Shirt</MenuItem>
+        <MenuItem value="Jeans">Jeans</MenuItem>
+        <MenuItem value="Pants">Pants</MenuItem>
+        <MenuItem value="Hoodie">Hoodie</MenuItem>
+        <MenuItem value="Sweater">Sweater</MenuItem>
+        <MenuItem value="Jacket">Jacket</MenuItem>
+        <MenuItem value="Dress">Dress</MenuItem>
+        <MenuItem value="Shorts">Shorts</MenuItem>
+        <MenuItem value="Skirts">Skirts</MenuItem>
+        <MenuItem value="Blouse">Blouse</MenuItem>
+        <MenuItem value="Top">Top</MenuItem>
+        <MenuItem value="Coat">Coat</MenuItem>
+        <MenuItem value="Hat">Hat</MenuItem>
+        <MenuItem value="Glove">Glove</MenuItem>
+        <MenuItem value="Shirt">Shirt</MenuItem>
       </Select>
     </FormControl>
   );

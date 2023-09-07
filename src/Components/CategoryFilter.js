@@ -1,37 +1,31 @@
-// import { Grid, Paper } from "@mui/material";
+import React from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { categories } from "../constants/categories";
 
-// const colors = [
-//   { value: "#FF5733", selected: false },
-//   { value: "#33FF57", selected: false },
-//   { value: "#5733FF", selected: false },
-//   { value: "#FFFF33", selected: false },
-//   { value: "#33FFFF", selected: false },
-//   { value: "#FF33FF", selected: false },
-// ];
+const CategoryFilter = ({ category, setCategory }) => {
+  const handleChange = (e) => {
+    setCategory(e.target.value);
+  };
 
-// const ColorPicker = ({ onColorSelect }) => {
-//   const handleColorClick = (color) => {
-//     color.selected = !color.selected;
-//     onColorSelect(colors.filter((c) => c.selected).map((c) => c.value));
-//   };
+  return (
+    <FormControl
+      fullWidth
+      style={{ padding: "7px", width: "300px", marginTop: "25px" }}
+    >
+      <InputLabel>Choose Category</InputLabel>
+      <Select value={category} onChange={handleChange}>
+        <MenuItem value="">All Categories</MenuItem>
+        {categories.map((cat) => (
+          <MenuItem key={cat} value={cat}>
+            {cat}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
 
-//   return (
-//     <Grid container spacing={1}>
-//       {colors.map((color, index) => (
-//         <Grid item key={index}>
-//           <Paper
-//             style={{
-//               width: "50px",
-//               height: "50px",
-//               backgroundColor: color.value,
-//               cursor: "pointer",
-//             }}
-//             onClick={() => handleColorClick(color)}
-//           ></Paper>
-//         </Grid>
-//       ))}
-//     </Grid>
-//   );
-// };
-
-// export default ColorPicker;
+export default CategoryFilter;
