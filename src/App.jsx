@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import { useState } from "react";
 import Login from './authentication/Login';
 import SignUp from './authentication/SignUp';
+import DetailPage from './components/Details/DetailPage'
 
 
 
@@ -15,6 +16,7 @@ function App() {
   }
   return (
     <>
+    <DetailPage />
     <Header />
     <Main />
     <Footer />
