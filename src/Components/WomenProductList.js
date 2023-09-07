@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { firebase } from "../helpers/db";
 import "firebase/compat/firestore";
 import { styled } from "@mui/system";
@@ -15,10 +15,16 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PriceFilter from "./PriceFilter";
 import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
+import CategoryFilter from "./CategoryFilter";
+import { categories } from "../constants/categories";
 
 const useStyles = createUseStyles({
   container: {
     display: "flex",
+    alignItems: "flex-start",
+  },
+  filtersContainer: {
+    width: "25%",
   },
 });
 
@@ -50,6 +56,8 @@ const WomenProductList = () => {
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
   const [cart, setCart] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [products, setProducts] = useState([]);
 
   const handleToggleFavorite = (productId) =>
     setFavorites((previousFavorites) =>
@@ -66,6 +74,35 @@ const WomenProductList = () => {
         return [...previousToCart, productId];
       }
     });
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      let query = firestore.collection("products");
+
+      if (selectedCategory !== "") {
+        console.log("selectedCategory:", selectedCategory);
+        query = query.where("category", "==", selectedCategory);
+      }
+
+      try {
+        const snapshot = await query.get();
+        const productsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("Результаты запроса:", productsData); // Посмотрите результаты запроса
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Ошибка при загрузке продуктов:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [selectedCategory]);
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
 
   const {
@@ -100,7 +137,14 @@ const WomenProductList = () => {
 
   return (
     <div className={classes.container}>
-      <PriceFilter onApplyFilter={onApplyFilter} />
+      <div className={classes.filtersContainer}>
+        <PriceFilter onApplyFilter={onApplyFilter} />
+        <CategoryFilter
+          category={selectedCategory}
+          setCategory={handleCategoryChange}
+          categories={categories}
+        />
+      </div>
       <Grid container spacing={2}>
         {productsListIsLoading ? (
           <div>Loading ...</div>
