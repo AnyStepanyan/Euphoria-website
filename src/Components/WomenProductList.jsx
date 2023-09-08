@@ -24,7 +24,8 @@ const useStyles = createUseStyles({
     alignItems: "flex-start",
   },
   filtersContainer: {
-    width: "25%",
+    maxWidth: "300px",
+    width: "100%",
   },
 });
 
@@ -81,6 +82,7 @@ const WomenProductList = () => {
       console.log("selectedCategory", selectedCategory);
 
       if (selectedCategory) {
+        // add where statements for price
         productsQuery = productsQuery.where("category", "==", selectedCategory);
       }
 
@@ -114,6 +116,7 @@ const WomenProductList = () => {
 
   const { run: onApplyFilter } = useRequest(
     async ({ minPrice, maxPrice }) => {
+      // add where statement for category filter
       const snapshot = await firestore
         .collection("products")
         .where("price", ">=", minPrice)
@@ -134,7 +137,10 @@ const WomenProductList = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.filtersContainer}>
+      <div
+        name="filtersContainer"
+        style={{ width: "100%", maxWidth: "300px", padding: "7px" }}
+      >
         <PriceFilter onApplyFilter={onApplyFilter} />
         <CategoryFilter
           category={selectedCategory}

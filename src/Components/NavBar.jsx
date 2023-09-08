@@ -82,6 +82,9 @@ function NavBar({ isBurgerOpen }) {
         <li>
           <Link to="/womenProducts">Women</Link>
         </li>
+        <li>
+          <Link to="/addProduct">Add</Link>
+        </li>
       </ul>
     </nav>
   );

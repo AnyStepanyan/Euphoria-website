@@ -26,7 +26,6 @@ const PriceFilter = ({ onApplyFilter }) => {
       spacing={2}
       style={{
         flex: "0 0 300px",
-        padding: "5px",
         marginRight: "32px",
         height: "100%",
       }}
