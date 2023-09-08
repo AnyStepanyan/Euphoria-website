@@ -1,13 +1,13 @@
-import { SectionDown } from "./SectionDown";
-import { SectionUp } from "./SectionUp";
+// import { SectionDown } from "./SectionDown";
+// import { SectionUp } from "./SectionUp";
 
-const DetailPage = () => {
-  return (
-    <>
-      <SectionUp />
-      <SectionDown />
-    </>
-  );
-};
+// const DetailPage = () => {
+//   return (
+//     <>
+//       <SectionUp />
+//       <SectionDown />
+//     </>
+//   );
+// };
 
-export default DetailPage;
+// export default DetailPage;
