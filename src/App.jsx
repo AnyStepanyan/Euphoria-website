@@ -11,9 +11,6 @@ import { AppRoutes } from "./components/AppRoutes";
 function App() {
   return (
     <>
-    <Header />
-    <Main />
-    <Footer />
     {/* <NavBar /> */}
     {/* {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)} */}
       <Header />

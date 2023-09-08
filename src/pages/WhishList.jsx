@@ -3,9 +3,6 @@ import Footer from '../components/Footer'
 import IncrementDecrement from '../components/IncrementDecrement'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
-import PurpleButtons from '../components/PurpleButtons';
-import { Link } from "react-router-dom";
-
 
 const useStyles = createUseStyles({
     addToCartWrapper: {
@@ -59,31 +56,13 @@ const useStyles = createUseStyles({
         marginBottom: 23,
       }
     },
-    totalWrapper: {
-        justifyContent: 'flex-end',
-        width: 280,
-        margin: '30px 100px',
-        '@media (max-width: 850px)': {
-            margin: '30px 10px', 
-        }
-    },
-    total: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        columnGap: 80,
-        borderBottom: '1px solid #807D7E',
-         marginBottom: 20,
-    },
-
     button: {
         display: 'flex',
-        justifyContent: 'center',
-        textDecoration: "none",
+        justifyContent: 'center'
     }
 })
 
-function AddToCart() {
+function WhishList() {
     const classes = useStyles()
 
     return (
@@ -105,34 +84,9 @@ function AddToCart() {
                     </div>
                     <div className={classes.productDetails2}>
                          <p className={classes.boldFont}>$29.00</p>
-                        < IncrementDecrement />
                         <DeleteForeverIcon />
                     </div>
                        
-                </div>
-                
-                <div className={classes.totalWrapper}>
-                <div className={classes.total}>
-                  <div>
-                   <p>Sub Total</p> 
-                   <p>Shipping</p>
-                   <br></br>
-                   <p><b>Grand Total</b></p>
-                </div>
-                <div>
-                   <p>$30</p>
-                   <p>$5</p>
-                   <br></br>
-                   <p><b>$35</b></p>
-                </div>  
-                </div>
-                
-                
-                <div className={classes.button}>
-                <Link to="/checkout">  
-                    <PurpleButtons   value='Proceed To Checkout'/>
-                    </Link>
-                    </div>
                 </div>
             </div>
         </>
@@ -140,4 +94,4 @@ function AddToCart() {
     )
 }
 
-export default AddToCart
+export default WhishList

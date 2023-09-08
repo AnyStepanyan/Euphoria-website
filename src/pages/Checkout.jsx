@@ -9,7 +9,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from '../Components/AddressForm';
+import AddressForm from '../components/AddressForm';
 import PaymentForm from '../components/PaymentForm';
 import Review from '../components/Review';
 import Header from '../components/Header';
@@ -48,7 +48,6 @@ export default function Checkout() {
   return (
    
     <ThemeProvider theme={theme}>
-     <Header />
       <CssBaseline />
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -95,7 +94,6 @@ export default function Checkout() {
           )}
         </Paper>
       </Container>
-       <Footer />
     </ThemeProvider>
    
    
