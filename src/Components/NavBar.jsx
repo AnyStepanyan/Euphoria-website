@@ -74,13 +74,13 @@ function NavBar({ isBurgerOpen }) {
     >
       <ul className={classes.navList}>
         <li>
-          <a href="#">Shop</a>
+          <Link to="#">Shop</Link>
         </li>
         <li>
-          <a href="#">Men</a>
+          <Link to="#">Men</Link>
         </li>
         <li>
-          <Link to="/detailpage">Women</Link>
+          <Link to="/womenProducts">Women</Link>
         </li>
       </ul>
     </nav>
