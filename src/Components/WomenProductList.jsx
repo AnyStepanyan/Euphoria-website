@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import fire from "../helpers/db";
 import "firebase/compat/firestore";
 import { styled } from "@mui/system";
@@ -17,6 +17,8 @@ import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import { categories } from "../constants/categories";
+import { CartContext } from "./Context";
+
 
 const useStyles = createUseStyles({
   container: {
@@ -53,9 +55,10 @@ const Content = styled(CardContent)`
 const firestore = fire.firestore();
 
 const WomenProductList = () => {
+  const [cart, setCart] = useContext(CartContext)
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
+  // const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleToggleFavorite = (productId) =>
@@ -133,6 +136,7 @@ const WomenProductList = () => {
   );
 
   return (
+    
     <div className={classes.container}>
       <div className={classes.filtersContainer}>
         <PriceFilter onApplyFilter={onApplyFilter} />
@@ -190,4 +194,7 @@ const WomenProductList = () => {
   );
 };
 
+
+
 export default WomenProductList;
+

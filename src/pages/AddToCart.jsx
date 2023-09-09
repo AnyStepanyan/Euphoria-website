@@ -1,10 +1,13 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 import IncrementDecrement from '../components/IncrementDecrement'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
 import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
+import { CartContext } from '../components/Context';
+import { useContext } from 'react';
+import { database } from "../helpers/db.js";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 
 
 const useStyles = createUseStyles({
@@ -84,32 +87,70 @@ const useStyles = createUseStyles({
 })
 
 function AddToCart() {
+    const [cart, setCart] = useContext(CartContext)
+    const [products, setProducts] = useState([]);
+
     const classes = useStyles()
+  
+    const fetchProducts = async () => {
+      await getDocs(collection(database, 'products')).then((querySnapshot) => {
+        const newData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setProducts(newData);
+      });
+    };
+ 
+   let productsForCart = products.filter((product)=>{
+        if(cart.includes(product.id)){
+            return product
+        }
+    } )
+
+    let subTotal = productsForCart.reduce((acc,product) => acc + product.price, 0)
+    let shippingPrice = subTotal >= 100 || subTotal === 0 ? 0: 5
+    let grandTotal = subTotal + shippingPrice
+
+   
+  
+    useEffect(() => {
+      fetchProducts();
+    }, []);
+
+    const deleteProduct = (productId) => {
+        return (
+          setCart(cart.filter((id) => id !== productId))
+        ) 
+    }
 
     return (
         <>
             <div className={classes.addToCartWrapper}>
-                <div className={classes.productsInCart}>
+            {productsForCart.map((product) => {
+          return (
+            <div className={classes.productsInCart} key={product.id}>
                     <div className={classes.productsDetails}>
                         <div className={classes.imgDiv}>
                             <img
-                                src='https://firebasestorage.googleapis.com/v0/b/euphoria-website-d2bac.appspot.com/o/womenProducts%2Fwoman01.svg?alt=media&token=2e606760-3cfa-474a-b873-df7e40f83e1e'
-                                alt='sdfsddsf'
+                                src={product.mainImageUrl}
+                                alt={product.name}
                                 className={classes.img} />
                         </div>
                         <div>
-                            <p className={classes.boldFont}>title</p>
-                            <p>color: yellow</p>
+                            <p className={classes.boldFont}>{product.name}</p>
+                            <p>color: {product.color[0]}</p>
                             <p>Size: M</p>
                         </div>
                     </div>
                     <div className={classes.productDetails2}>
-                         <p className={classes.boldFont}>$29.00</p>
+                         <p className={classes.boldFont}>{product.price}</p>
                         < IncrementDecrement />
-                        <DeleteForeverIcon />
+                        <DeleteForeverIcon onClick={() => deleteProduct(product.id)} />
                     </div>
-                       
                 </div>
+          );
+        })}   
                 
                 <div className={classes.totalWrapper}>
                 <div className={classes.total}>
@@ -120,10 +161,10 @@ function AddToCart() {
                    <p><b>Grand Total</b></p>
                 </div>
                 <div>
-                   <p>$30</p>
-                   <p>$5</p>
+                   <p>${subTotal.toFixed(2)}</p>
+                   <p>${shippingPrice}</p>
                    <br></br>
-                   <p><b>$35</b></p>
+                   <p><b>${grandTotal.toFixed(2)}</b></p>
                 </div>  
                 </div>
                 
