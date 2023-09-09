@@ -20,6 +20,7 @@ import { categories } from "../constants/categories";
 import { CartContext } from "./Context";
 
 
+
 const useStyles = createUseStyles({
   container: {
     display: "flex",

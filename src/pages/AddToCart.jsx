@@ -89,6 +89,7 @@ const useStyles = createUseStyles({
 function AddToCart() {
     const [cart, setCart] = useContext(CartContext)
     const [products, setProducts] = useState([]);
+    
 
     const classes = useStyles()
   
@@ -140,12 +141,19 @@ function AddToCart() {
                         <div>
                             <p className={classes.boldFont}>{product.name}</p>
                             <p>color: {product.color[0]}</p>
-                            <p>Size: M</p>
+                            <select>
+                                <option value='' selected hidden disabled>Choose Size</option>
+                                <option value='XS'>XS</option>
+                                <option value='S'>S</option>
+                                <option value='M'>M</option>
+                                <option value='L'>L</option>
+                                <option value='XL'>XL</option>
+                            </select>
                         </div>
                     </div>
                     <div className={classes.productDetails2}>
                          <p className={classes.boldFont}>{product.price}</p>
-                        < IncrementDecrement />
+                        < IncrementDecrement onClick={(e) => console.log(e.target.count)} />
                         <DeleteForeverIcon onClick={() => deleteProduct(product.id)} />
                     </div>
                 </div>
