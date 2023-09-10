@@ -83,6 +83,9 @@ const useStyles = createUseStyles({
         display: 'flex',
         justifyContent: 'center',
         textDecoration: "none",
+    },
+    select: {
+      cursor: 'pointer'
     }
 })
 
@@ -125,6 +128,7 @@ function AddToCart() {
         ) 
     }
 
+
     return (
         <>
             <div className={classes.addToCartWrapper}>
@@ -141,7 +145,7 @@ function AddToCart() {
                         <div>
                             <p className={classes.boldFont}>{product.name}</p>
                             <p>color: {product.color[0]}</p>
-                            <select>
+                            <select className={classes.select} >
                                 <option value='' selected hidden disabled>Choose Size</option>
                                 <option value='XS'>XS</option>
                                 <option value='S'>S</option>
@@ -153,8 +157,8 @@ function AddToCart() {
                     </div>
                     <div className={classes.productDetails2}>
                          <p className={classes.boldFont}>{product.price}</p>
-                        < IncrementDecrement onClick={(e) => console.log(e.target.count)} />
-                        <DeleteForeverIcon onClick={() => deleteProduct(product.id)} />
+                        < IncrementDecrement />
+                        <DeleteForeverIcon sx= {{'&:hover': {color: 'blue'}, cursor: 'pointer'}} onClick={() => deleteProduct(product.id)} />
                     </div>
                 </div>
           );
@@ -178,7 +182,7 @@ function AddToCart() {
                 
                 
                 <div className={classes.button}>
-                <Link to="/checkout">  
+                <Link  to="/checkout">  
                     <PurpleButtons   value='Proceed To Checkout'/>
                     </Link>
                     </div>

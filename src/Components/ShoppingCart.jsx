@@ -12,7 +12,9 @@ function ShoppingCart() {
         <Badge color="primary" badgeContent={cart.length} showZero>
          <Link to="/addToCart">
             <ShoppingCartOutlinedIcon 
-            sx={{ fontSize: 28, color: '#807D7E',  marginTop: 0.4, cursor: 'pointer'}}
+            sx={{ fontSize: 28, color: '#807D7E', 
+             marginTop: 0.4, cursor: 'pointer',
+             '&:hover': {color: 'blue'}}}
              />
          </Link>
     </Badge>
