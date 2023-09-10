@@ -25,6 +25,7 @@ const useStyles = createUseStyles({
   container: {
     display: "flex",
     alignItems: "flex-start",
+    marginTop: 20,
   },
   filtersContainer: {
     width: "25%",
@@ -137,7 +138,6 @@ const WomenProductList = () => {
   );
 
   return (
-    
     <div className={classes.container}>
       <div className={classes.filtersContainer}>
         <PriceFilter onApplyFilter={onApplyFilter} />
