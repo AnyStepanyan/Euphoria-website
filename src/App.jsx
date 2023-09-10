@@ -6,16 +6,19 @@ import { useState } from "react";
 // import SignUp from './Authentication/SignUp';
 // import DetailPage from './components/Details/DetailPage'
 import { AppRoutes } from "./components/AppRoutes";
-
+import { CartContext } from "./components/Context";
 
 function App() {
+  const [cart, setCart] = useState([])
   return (
     <>
     {/* <NavBar /> */}
     {/* {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)} */}
+      <CartContext.Provider value={[cart, setCart]}>
       <Header />
       <AppRoutes />
       <Footer />
+      </CartContext.Provider>
     </>
   );
 }
