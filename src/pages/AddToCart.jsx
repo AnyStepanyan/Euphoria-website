@@ -8,6 +8,8 @@ import { useContext } from 'react';
 import { database } from "../helpers/db.js";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
+import { ReactComponent as EmptyCartImage } from "../Assets/images/emptyCart.svg";
+
 
 
 const useStyles = createUseStyles({
@@ -86,15 +88,31 @@ const useStyles = createUseStyles({
     },
     select: {
       cursor: 'pointer'
+    },
+    emptyCartWrapper: {
+        margin: 30,
+        textAlign: 'center',
+        '@media (max-width: 400px)': {
+            marginTop: -40, 
+        }
+    },
+    emptyCartTextDiv: {
+        color: '#807D7E',
+        '@media (max-width: 430px)': {
+            marginTop: -50, 
+        }
     }
 })
 
 function AddToCart() {
-    const [cart, setCart] = useContext(CartContext)
+    const {cart, setCart, orders, setOrders} = useContext(CartContext)
     const [products, setProducts] = useState([]);
+    const [selectedSize, setSelectedSize] = useState('');
     
 
     const classes = useStyles()
+
+    
   
     const fetchProducts = async () => {
       await getDocs(collection(database, 'products')).then((querySnapshot) => {
@@ -118,16 +136,21 @@ function AddToCart() {
 
    
   
-    useEffect(() => {
-      fetchProducts();
-    }, []);
+   
 
     const deleteProduct = (productId) => {
         return (
           setCart(cart.filter((id) => id !== productId))
         ) 
     }
+    const handleSelectChange = (selectedOption, productId) => {
+            }
 
+    useEffect(() => {
+        fetchProducts();
+      }, []);
+
+    console.log(cart, 'cart')
 
     return (
         <>
@@ -145,7 +168,7 @@ function AddToCart() {
                         <div>
                             <p className={classes.boldFont}>{product.name}</p>
                             <p>color: {product.color[0]}</p>
-                            <select className={classes.select} >
+                            <select className={classes.select} onChange={(e) =>handleSelectChange(e.target.value, product.id)} >
                                 <option value='' selected hidden disabled>Choose Size</option>
                                 <option value='XS'>XS</option>
                                 <option value='S'>S</option>
@@ -164,7 +187,7 @@ function AddToCart() {
           );
         })}   
                 
-                <div className={classes.totalWrapper}>
+               {cart.length > 0 && <div className={classes.totalWrapper}>
                 <div className={classes.total}>
                   <div>
                    <p>Sub Total</p> 
@@ -186,8 +209,25 @@ function AddToCart() {
                     <PurpleButtons   value='Proceed To Checkout'/>
                     </Link>
                     </div>
+                </div>} 
+            </div>
+
+            {cart.length === 0 && 
+            <div className={classes.emptyCartWrapper}>
+              <div className={classes.emptyCartImgDiv}>
+                <EmptyCartImage className={classes.img}  /> 
+                </div> 
+                <div className={classes.emptyCartTextDiv}>
+                    <p><b>Your cart is empty and sad :(</b></p>
+                    <p>Add something to make it happy!</p>
+                    <div className={classes.button}>
+                <Link  to="/womenProducts">  
+                    <PurpleButtons   value='continue shopping'/>
+                    </Link>
+                    </div>
                 </div>
             </div>
+            }
         </>
 
     )

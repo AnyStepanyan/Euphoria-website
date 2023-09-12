@@ -1,5 +1,7 @@
 import { createUseStyles } from 'react-jss'
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from "react-router-dom";
+
 
 
 const useStyles = createUseStyles({
@@ -52,6 +54,7 @@ const useStyles = createUseStyles({
 
 function NavBarMobile({ onClick, isBurgerOpen }) {
     const classes = useStyles()
+   
 
     if(isBurgerOpen){
         document.body.style.overflow='hidden'
@@ -62,9 +65,9 @@ function NavBarMobile({ onClick, isBurgerOpen }) {
     return (
         <nav className={`${classes.nav}  ${isBurgerOpen ? classes.displayFlex : ''}`}>
             <ul className={classes.navList}>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">Men</a></li>
-                <li><a href="#">Women</a></li>
+                <li onClick={onClick}> <Link to="/shop">Shop</Link></li>
+                <li onClick={onClick}><Link to="#">Men</Link></li>
+                <li onClick={onClick}>   <Link to="/womenProducts" >Women</Link></li>
             </ul>
             <CloseIcon onClick={onClick} sx={{
                 position: 'absolute',
