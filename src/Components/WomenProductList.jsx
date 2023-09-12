@@ -17,6 +17,9 @@ import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import { categories } from "../constants/categories";
+import ColorFilter from "./ColorFilter";
+import Loading from "./Loading";
+import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({
   container: {
@@ -49,6 +52,8 @@ const Content = styled(CardContent)`
   flex-direction: column;
   align-items: center;
   flex: 1 0 auto;
+  max-height: 250px;
+  height: 100%;
 `;
 
 const firestore = fire.firestore();
@@ -58,6 +63,7 @@ const WomenProductList = () => {
   const [favorites, setFavorites] = useState([]);
   const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
 
   const handleToggleFavorite = (productId) =>
     setFavorites((previousFavorites) =>
@@ -77,13 +83,15 @@ const WomenProductList = () => {
   };
 
   const { run: filterByCategory } = useRequest(
-    async ({ selectedCategory }) => {
+    async ({ selectedCategory, minPrice, maxPrice }) => {
       let productsQuery = firestore.collection("products");
-      console.log("selectedCategory", selectedCategory);
 
-      if (selectedCategory) {
-        // add where statements for price
-        productsQuery = productsQuery.where("category", "==", selectedCategory);
+      if (selectedCategory && minPrice && maxPrice) {
+        // add where statements for pricem
+        productsQuery = productsQuery
+          .where("category", "==", selectedCategory)
+          .where("minPrice", ">=", minPrice)
+          .where("maxPrice", "<=", maxPrice);
       }
 
       const snapshot = await productsQuery.get();
@@ -109,7 +117,10 @@ const WomenProductList = () => {
     loading: productsListIsLoading,
     mutate: mutateProductsList,
   } = useRequest(async () => {
-    const snapshot = await firestore.collection("products").get();
+    const snapshot = await firestore
+      .collection("products")
+      .where("gender", "==", "female")
+      .get();
     const result = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result;
   });
@@ -135,63 +146,116 @@ const WomenProductList = () => {
     }
   );
 
+  const { run: filterByColor } = useRequest(
+    async ({ selectedColor }) => {
+      let productsQuery = firestore.collection("products");
+      console.log("selectedColor", selectedColor);
+
+      if (selectedColor) {
+        productsQuery = productsQuery.where(
+          "color",
+          "array-contains",
+          selectedColor
+        );
+      }
+
+      const snapshot = await productsQuery.get();
+      const products = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      console.log("products", products);
+      mutateProductsList(products);
+    },
+    {
+      manual: true,
+    }
+  );
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+    filterByColor({ selectedColor: color });
+    console.log("col", { selectedColor });
+  };
+
   return (
-    <div className={classes.container}>
-      <div
-        name="filtersContainer"
-        style={{ width: "100%", maxWidth: "300px", padding: "7px" }}
-      >
-        <PriceFilter onApplyFilter={onApplyFilter} />
-        <CategoryFilter
-          category={selectedCategory}
-          setCategory={handleCategoryChange}
-          categories={categories}
-        />
+    <div style={{ backgroundColor: "#F0F0F0" }}>
+      <div className={classes.container}>
+        <div // Filters container
+          style={{ width: "100%", maxWidth: "300px", padding: "7px" }}
+        >
+          <PriceFilter onApplyFilter={onApplyFilter} />
+          <CategoryFilter
+            category={selectedCategory}
+            setCategory={handleCategoryChange}
+            categories={categories}
+          />
+          <ColorFilter
+            color={selectedColor}
+            setColor={handleColorChange}
+            colors={colors}
+          />
+        </div>
+        <Grid container spacing={2} style={{ padding: "5px" }}>
+          {productsListIsLoading ? (
+            <Loading />
+          ) : (
+            productsList.map((product) => (
+              <Grid key={product.id} item xs={12} sm={6} md={3}>
+                <RootCard>
+                  <div style={{ position: "relative" }}>
+                    <MediaImage
+                      component="img"
+                      image={product.mainImageUrl}
+                      alt={product.name}
+                    />
+                    <IconButton
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        boxSizing: "border-box",
+                      }}
+                      aria-label="Add to favorites"
+                      color={
+                        favorites.includes(product.id) ? "primary" : "default"
+                      }
+                      onClick={() => handleToggleFavorite(product.id)}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  </div>
+                  <Content style={{ padding: "5px" }}>
+                    <Typography
+                      variant="h9"
+                      component="div"
+                      style={{ marginBottom: "10px" }}
+                    >
+                      {product.category}
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                      {product.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {product.description}
+                    </Typography>
+                    <Typography variant="body1" color="textPrimary">
+                      Price: ${product.price}
+                    </Typography>
+                    <IconButton
+                      aria-label="Add to cart"
+                      color={cart.includes(product.id) ? "primary" : "default"}
+                      onClick={() => handleToggleCart(product.id)}
+                    >
+                      <ShoppingCartIcon />
+                    </IconButton>
+                  </Content>
+                </RootCard>
+              </Grid>
+            ))
+          )}
+        </Grid>
       </div>
-      <Grid container spacing={2}>
-        {productsListIsLoading ? (
-          <div>Loading ...</div>
-        ) : (
-          productsList.map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={3}>
-              <RootCard>
-                <MediaImage
-                  component="img"
-                  image={product.mainImageUrl}
-                  alt={product.name}
-                />
-                <Content>
-                  <Typography variant="h6" component="div">
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {product.description}
-                  </Typography>
-                  <Typography variant="body1" color="textPrimary">
-                    Price: ${product.price}
-                  </Typography>
-                  <IconButton
-                    aria-label="Add to favorites"
-                    color={
-                      favorites.includes(product.id) ? "primary" : "default"
-                    }
-                    onClick={() => handleToggleFavorite(product.id)}
-                  >
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="Add to cart"
-                    color={cart.includes(product.id) ? "primary" : "default"}
-                    onClick={() => handleToggleCart(product.id)}
-                  >
-                    <ShoppingCartIcon />
-                  </IconButton>
-                </Content>
-              </RootCard>
-            </Grid>
-          ))
-        )}
-      </Grid>
     </div>
   );
 };

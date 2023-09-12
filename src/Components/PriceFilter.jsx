@@ -35,6 +35,7 @@ const PriceFilter = ({ onApplyFilter }) => {
           label="Min Price"
           type="number"
           value={minPrice}
+          style={{ backgroundColor: "white" }}
           onChange={(e) =>
             setMinPrice((previousValue) =>
               valueInRange({
@@ -54,6 +55,7 @@ const PriceFilter = ({ onApplyFilter }) => {
           label="Max Price"
           type="number"
           value={maxPrice}
+          style={{ backgroundColor: "white" }}
           onChange={(e) =>
             setMaxPrice((previousValue) =>
               valueInRange({

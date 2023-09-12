@@ -18,6 +18,7 @@ const CategoryFilter = ({ category, setCategory }) => {
         maxWidth: "300px",
         width: "100%",
         marginTop: "25px",
+        backgroundColor: "white",
       }}
     >
       <InputLabel style={{ maxWidth: "300px", width: "100%" }}>

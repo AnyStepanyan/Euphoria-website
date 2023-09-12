@@ -17,19 +17,19 @@ import Container from "@mui/material/Container";
 
 const firestore = fire.firestore();
 
-const colors = [
-  { value: "#000000", label: "Black", selected: false },
-  { value: "#969696", label: "Gray", selected: false },
-  { value: "#ffffff", label: "White", selected: false },
-  { value: "#ff5722", label: "Orange", selected: false },
-  { value: "#fbc02d", label: "Yellow", selected: false },
-  { value: "#388e3c", label: "Green", selected: false },
-  { value: "#00bcd4", label: "Cyan", selected: false },
-  { value: "#3f51b5", label: "Blue", selected: false },
-  { value: "#673ab7", label: "Purple", selected: false },
-  { value: "#e91e63", label: "Pink", selected: false },
-  { value: "#ff1100", label: "Red", selected: false },
-  { value: "#8b572a", label: "Brown", selected: false },
+export const colors = [
+  { value: "Black", selected: false },
+  { value: "Gray", selected: false },
+  { value: "White", selected: false },
+  { value: "Orange", selected: false },
+  { value: "Yellow", selected: false },
+  { value: "Green", selected: false },
+  { value: "Cyan", selected: false },
+  { value: "Blue", selected: false },
+  { value: "Purple", selected: false },
+  { value: "Pink", selected: false },
+  { value: "Red", selected: false },
+  { value: "Brown", selected: false },
 ];
 
 const AddProductPage = () => {
@@ -99,11 +99,15 @@ const AddProductPage = () => {
     Promise.all(storagePromises)
       .then((imageUrls) => {
         const mainImageUrl = imageUrls[0];
+        const selectedColorValue = selectedColors
+          .filter((color) => color.selected)
+          .map((color) => color.value);
+
         const productData = {
           name: productName,
           price: parseInt(productPrice),
           category: category,
-          color: selectedColors,
+          color: selectedColorValue,
           gender: gender,
           size: selectedSizes,
           mainImageUrl: mainImageUrl,
@@ -177,8 +181,8 @@ const AddProductPage = () => {
         <InputLabel>Gender</InputLabel>
         <Select value={gender} onChange={(e) => setGender(e.target.value)}>
           <MenuItem value="">Choose Gender</MenuItem>
-          <MenuItem value="gender1">Male</MenuItem>
-          <MenuItem value="gender2">Female</MenuItem>
+          <MenuItem value="male">Male</MenuItem>
+          <MenuItem value="female">Female</MenuItem>
         </Select>
       </FormControl>
       <Category category={category} setCategory={setCategory} />
