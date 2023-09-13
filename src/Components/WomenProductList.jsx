@@ -17,7 +17,7 @@ import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import { categories } from "../constants/categories";
-import { CartContext } from "./Context";
+import CartContext from "../Components/Context";
 // import { WhishListContext } from "./Context";
 
 

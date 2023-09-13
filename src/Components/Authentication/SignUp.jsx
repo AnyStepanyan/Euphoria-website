@@ -16,6 +16,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import fire from "../../helpers/db";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = (props) => {
   const classes = useStyles();
@@ -32,16 +33,18 @@ const SignUp = (props) => {
   const handleConfirmPassword = (event) => {
     setConfirmPassword(event.target.value);
   };
-  const handleSignUp = () => {
-    fire
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        if (response) {
-          props.toggle();
-          toast.success("User is Registered Successfully");
-        }
-      })
+  const handleSignUp = (data) => {
+    console.log(data)
+    const auth = getAuth(fire); // Initialize Firebase Authentication
+            
+            // Use the createUserWithEmailAndPassword function to create a new user
+            createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                console.log(userCredential,"--userCredential")
+                const user = userCredential.user;
+                console.log("User registered:", user);
+                
+              })
       .catch((error) => {
         switch (error.code) {
           case "auth/email-already-in-use":

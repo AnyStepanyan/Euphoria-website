@@ -1,9 +1,9 @@
-import IncrementDecrement from '../components/IncrementDecrement'
+import IncrementDecrement from '../Components/IncrementDecrement'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
-import PurpleButtons from '../components/PurpleButtons';
+import PurpleButtons from '../Components/PurpleButtons';
 import { Link } from "react-router-dom";
-import { CartContext } from '../components/Context';
+import CartContext  from '../Components/Context';
 import { useContext } from 'react';
 import { database } from "../helpers/db.js";
 import { useEffect, useState } from "react";
