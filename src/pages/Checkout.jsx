@@ -12,20 +12,23 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from '../components/AddressForm';
 import PaymentForm from '../components/PaymentForm';
 import Review from '../components/Review';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import PurpleButtons from '../components/PurpleButtons';
+import { Link } from "react-router-dom";
+import { CartContext } from '../components/Context';
+import { useContext } from 'react';
 
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Shipping address', 'Review your order','Payment details'];
 
 function getStepContent(step) {
+  
   switch (step) {
     case 0:
       return <AddressForm />;
     case 1:
-      return <PaymentForm />;
-    case 2:
       return <Review />;
+    case 2:
+      return <PaymentForm />;
     default:
       throw new Error('Unknown step');
   }
@@ -35,10 +38,15 @@ const theme = createTheme();
 
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const { setCart} = useContext(CartContext)
+
   
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    if(activeStep === 2){
+      setCart([])
+    }
   };
 
   const handleBack = () => {
@@ -67,11 +75,15 @@ export default function Checkout() {
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
+                Your order number is #000000. We have emailed your order
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>
+              <Link style={{textDecoration: 'none', textAlign: 'center', padding: 20}} to="/womenProducts">  
+                    <PurpleButtons   value='continue shopping'/>
+                    </Link>
             </React.Fragment>
+            
           ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
@@ -87,12 +99,13 @@ export default function Checkout() {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                  {activeStep === steps.length - 1 ? 'Pay' : 'Next'}
                 </Button>
               </Box>
             </React.Fragment>
           )}
         </Paper>
+       
       </Container>
     </ThemeProvider>
    
