@@ -11,7 +11,7 @@ function valueInRange({ x, min, max }) {
 
 const PriceFilter = ({ onApplyFilter }) => {
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1);
+  const [maxPrice, setMaxPrice] = useState(0);
 
   const handleApplyFilter = () => {
     onApplyFilter({

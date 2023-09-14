@@ -3,6 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { ReactComponent as Banner1 } from "../Assets/images/banner1.svg";
 import { createUseStyles } from "react-jss";
 import ButtonShopNow from "./ButtonShopNow";
+import { Link } from "react-router-dom";
 
 
 
@@ -82,7 +83,9 @@ function DemoCarousel() {
                     <p>T-shirt / Tops</p>
                     <h6>Summer Value Pack</h6>
                     <p>cool / colorful / comfy</p>
-                    <ButtonShopNow />
+                    <Link style={{textDecoration: 'none'}}  to="/womenProducts">  
+                    <ButtonShopNow value='Shop Women' />
+                    </Link>
                 </div>
 
                 <Banner1 className={classes.banner} />
@@ -94,8 +97,9 @@ function DemoCarousel() {
                     <p>T-shirt / Tops</p>
                     <h6>Summer Value Pack</h6>
                     <p>cool / colorful / comfy</p>
-                    <ButtonShopNow />
-                </div>
+                    <Link style={{textDecoration: 'none'}}  to="/womenProducts">  
+                    <ButtonShopNow value='Shop Women' />
+                    </Link>                </div>
 
                 <Banner1 className={classes.banner} />
             </div>
