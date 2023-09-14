@@ -40,7 +40,6 @@ const RootCard = styled(Card)`
 
 const MediaImage = styled(CardMedia)`
   display: flex;
-  flex: 1 0 auto;
   marginbottom: ${(props) => props.theme.spacing(1)};
 `;
 
@@ -49,8 +48,8 @@ const Content = styled(CardContent)`
   object-position: center;
   display: flex;
   flex-direction: column;
+  justifyContent: "space-between",
   align-items: center;
-  flex: 1 0 auto;
 `;
 
 const firestore = fire.firestore();
@@ -59,7 +58,6 @@ const WomenProductList = () => {
   const [cart, setCart] = useContext(CartContext);
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
-  // const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
@@ -117,22 +115,6 @@ const WomenProductList = () => {
     return result;
   });
 
-  const { run: onApplyFilter } = useRequest(
-    async ({ minPrice, maxPrice }) => {
-      const snapshot = await firestore.collection("products").get();
-
-      const result = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-
-      mutateProductsList(result);
-    },
-    {
-      manual: true,
-    }
-  );
-
   const handleColorChange = (color) => {
     setSelectedColor(color);
     filterByColor({ selectedColor: color });
@@ -165,9 +147,29 @@ const WomenProductList = () => {
     }
   );
 
+  const { run: onApplyFilter } = useRequest(
+    async ({ minPrice, maxPrice }) => {
+      const snapshot = await firestore
+        .collection("products")
+        .where("price", ">=", minPrice)
+        .where("price", "<=", maxPrice)
+        .get();
+
+      const result = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      mutateProductsList(result);
+    },
+    {
+      manual: true,
+    }
+  );
+
   return (
     <div className={classes.container}>
-      <div className={classes.filtersContainer}>
+      <div style={{ width: "100%", maxWidth: "300px", padding: "7px" }}>
         <PriceFilter onApplyFilter={onApplyFilter} />
         <CategoryFilter
           category={selectedCategory}
@@ -192,32 +194,52 @@ const WomenProductList = () => {
                   image={product.mainImageUrl}
                   alt={product.name}
                 />
-                <Content>
-                  <Typography variant="h6" component="div">
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {product.description}
-                  </Typography>
-                  <Typography variant="body1" color="textPrimary">
-                    Price: ${product.price}
-                  </Typography>
-                  <IconButton
-                    aria-label="Add to favorites"
-                    color={
-                      favorites.includes(product.id) ? "primary" : "default"
-                    }
-                    onClick={() => handleToggleFavorite(product.id)}
+                <Content sx={{ flexGrow: 1, justifyContent: "space-between" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
                   >
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="Add to cart"
-                    color={cart.includes(product.id) ? "primary" : "default"}
-                    onClick={() => handleToggleCart(product.id)}
-                  >
-                    <ShoppingCartIcon />
-                  </IconButton>
+                    <Typography variant="h6" lineHeight={1.1}>
+                      {product.name}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Typography
+                      variant="body1"
+                      color="textPrimary"
+                      textAlign={"center"}
+                    >
+                      Price: ${product.price}
+                    </Typography>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <IconButton
+                        aria-label="Add to favorites"
+                        color={
+                          favorites.includes(product.id) ? "primary" : "default"
+                        }
+                        onClick={() => handleToggleFavorite(product.id)}
+                      >
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="Add to cart"
+                        color={
+                          cart.includes(product.id) ? "primary" : "default"
+                        }
+                        onClick={() => handleToggleCart(product.id)}
+                      >
+                        <ShoppingCartIcon />
+                      </IconButton>
+                    </div>
+                  </div>
                 </Content>
               </RootCard>
             </Grid>
