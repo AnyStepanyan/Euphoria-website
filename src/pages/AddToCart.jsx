@@ -1,9 +1,14 @@
-import Header from '../Components/Header'
-import Footer from '../Components/Footer'
-import IncrementDecrement from '../Components/IncrementDecrement'
+import IncrementDecrement from '../components/IncrementDecrement'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
-import PurpleButtons from '../Components/PurpleButtons';
+import PurpleButtons from '../components/PurpleButtons';
+import { Link } from "react-router-dom";
+import { CartContext } from '../components/Context';
+import { useContext } from 'react';
+import { database } from "../helpers/db.js";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+
 
 const useStyles = createUseStyles({
     addToCartWrapper: {
@@ -76,38 +81,88 @@ const useStyles = createUseStyles({
 
     button: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textDecoration: "none",
+    },
+    select: {
+      cursor: 'pointer'
     }
 })
 
 function AddToCart() {
+    const [cart, setCart] = useContext(CartContext)
+    const [products, setProducts] = useState([]);
+    
+
     const classes = useStyles()
+  
+    const fetchProducts = async () => {
+      await getDocs(collection(database, 'products')).then((querySnapshot) => {
+        const newData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setProducts(newData);
+      });
+    };
+ 
+   let productsForCart = products.filter((product)=>{
+        if(cart.includes(product.id)){
+            return product
+        }
+    } )
+
+    let subTotal = productsForCart.reduce((acc,product) => acc + product.price, 0)
+    let shippingPrice = subTotal >= 100 || subTotal === 0 ? 0: 5
+    let grandTotal = subTotal + shippingPrice
+
+   
+  
+    useEffect(() => {
+      fetchProducts();
+    }, []);
+
+    const deleteProduct = (productId) => {
+        return (
+          setCart(cart.filter((id) => id !== productId))
+        ) 
+    }
+
 
     return (
         <>
-            <Header />
             <div className={classes.addToCartWrapper}>
-                <div className={classes.productsInCart}>
+            {productsForCart.map((product) => {
+          return (
+            <div className={classes.productsInCart} key={product.id}>
                     <div className={classes.productsDetails}>
                         <div className={classes.imgDiv}>
                             <img
-                                src='https://firebasestorage.googleapis.com/v0/b/euphoria-website-d2bac.appspot.com/o/womenProducts%2Fwoman01.svg?alt=media&token=2e606760-3cfa-474a-b873-df7e40f83e1e'
-                                alt='sdfsddsf'
+                                src={product.mainImageUrl}
+                                alt={product.name}
                                 className={classes.img} />
                         </div>
                         <div>
-                            <p className={classes.boldFont}>title</p>
-                            <p>color: yellow</p>
-                            <p>Size: M</p>
+                            <p className={classes.boldFont}>{product.name}</p>
+                            <p>color: {product.color[0]}</p>
+                            <select className={classes.select} >
+                                <option value='' selected hidden disabled>Choose Size</option>
+                                <option value='XS'>XS</option>
+                                <option value='S'>S</option>
+                                <option value='M'>M</option>
+                                <option value='L'>L</option>
+                                <option value='XL'>XL</option>
+                            </select>
                         </div>
                     </div>
                     <div className={classes.productDetails2}>
-                         <p className={classes.boldFont}>$29.00</p>
+                         <p className={classes.boldFont}>{product.price}</p>
                         < IncrementDecrement />
-                        <DeleteForeverIcon />
+                        <DeleteForeverIcon sx= {{'&:hover': {color: 'blue'}, cursor: 'pointer'}} onClick={() => deleteProduct(product.id)} />
                     </div>
-                       
                 </div>
+          );
+        })}   
                 
                 <div className={classes.totalWrapper}>
                 <div className={classes.total}>
@@ -118,19 +173,21 @@ function AddToCart() {
                    <p><b>Grand Total</b></p>
                 </div>
                 <div>
-                   <p>$30</p>
-                   <p>$5</p>
+                   <p>${subTotal.toFixed(2)}</p>
+                   <p>${shippingPrice}</p>
                    <br></br>
-                   <p><b>$35</b></p>
+                   <p><b>${grandTotal.toFixed(2)}</b></p>
                 </div>  
                 </div>
                 
                 
-                <div className={classes.button}><PurpleButtons   value='Proceed To Checkout'/></div>
+                <div className={classes.button}>
+                <Link  to="/checkout">  
+                    <PurpleButtons   value='Proceed To Checkout'/>
+                    </Link>
+                    </div>
                 </div>
             </div>
-
-            <Footer />
         </>
 
     )

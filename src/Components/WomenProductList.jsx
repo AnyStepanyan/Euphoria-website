@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import fire from "../helpers/db";
 import "firebase/compat/firestore";
 import { styled } from "@mui/system";
@@ -16,9 +16,9 @@ import PriceFilter from "./PriceFilter";
 import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
-import { categories } from "../constants/categories";
 import ColorFilter from "./ColorFilter";
-import Loading from "./Loading";
+import { categories } from "../constants/categories";
+import { CartContext } from "./Context";
 import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({
@@ -27,8 +27,7 @@ const useStyles = createUseStyles({
     alignItems: "flex-start",
   },
   filtersContainer: {
-    maxWidth: "300px",
-    width: "100%",
+    width: "25%",
   },
 });
 
@@ -52,16 +51,15 @@ const Content = styled(CardContent)`
   flex-direction: column;
   align-items: center;
   flex: 1 0 auto;
-  max-height: 250px;
-  height: 100%;
 `;
 
 const firestore = fire.firestore();
 
 const WomenProductList = () => {
+  const [cart, setCart] = useContext(CartContext);
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
+  // const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
@@ -83,15 +81,12 @@ const WomenProductList = () => {
   };
 
   const { run: filterByCategory } = useRequest(
-    async ({ selectedCategory, minPrice, maxPrice }) => {
+    async ({ selectedCategory }) => {
       let productsQuery = firestore.collection("products");
+      console.log("selectedCategory", selectedCategory);
 
-      if (selectedCategory && minPrice && maxPrice) {
-        // add where statements for pricem
-        productsQuery = productsQuery
-          .where("category", "==", selectedCategory)
-          .where("minPrice", ">=", minPrice)
-          .where("maxPrice", "<=", maxPrice);
+      if (selectedCategory) {
+        productsQuery = productsQuery.where("category", "==", selectedCategory);
       }
 
       const snapshot = await productsQuery.get();
@@ -117,22 +112,14 @@ const WomenProductList = () => {
     loading: productsListIsLoading,
     mutate: mutateProductsList,
   } = useRequest(async () => {
-    const snapshot = await firestore
-      .collection("products")
-      .where("gender", "==", "female")
-      .get();
+    const snapshot = await firestore.collection("products").get();
     const result = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result;
   });
 
   const { run: onApplyFilter } = useRequest(
     async ({ minPrice, maxPrice }) => {
-      // add where statement for category filter
-      const snapshot = await firestore
-        .collection("products")
-        .where("price", ">=", minPrice)
-        .where("price", "<=", maxPrice)
-        .get();
+      const snapshot = await firestore.collection("products").get();
 
       const result = snapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -145,6 +132,12 @@ const WomenProductList = () => {
       manual: true,
     }
   );
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+    filterByColor({ selectedColor: color });
+    console.log("col", { selectedColor });
+  };
 
   const { run: filterByColor } = useRequest(
     async ({ selectedColor }) => {
@@ -172,90 +165,65 @@ const WomenProductList = () => {
     }
   );
 
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
-    filterByColor({ selectedColor: color });
-    console.log("col", { selectedColor });
-  };
-
   return (
-    <div style={{ backgroundColor: "#F0F0F0" }}>
-      <div className={classes.container}>
-        <div // Filters container
-          style={{ width: "100%", maxWidth: "300px", padding: "7px" }}
-        >
-          <PriceFilter onApplyFilter={onApplyFilter} />
-          <CategoryFilter
-            category={selectedCategory}
-            setCategory={handleCategoryChange}
-            categories={categories}
-          />
-          <ColorFilter
-            color={selectedColor}
-            setColor={handleColorChange}
-            colors={colors}
-          />
-        </div>
-        <Grid container spacing={2} style={{ padding: "5px" }}>
-          {productsListIsLoading ? (
-            <Loading />
-          ) : (
-            productsList.map((product) => (
-              <Grid key={product.id} item xs={12} sm={6} md={3}>
-                <RootCard>
-                  <div style={{ position: "relative" }}>
-                    <MediaImage
-                      component="img"
-                      image={product.mainImageUrl}
-                      alt={product.name}
-                    />
-                    <IconButton
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        right: 0,
-                        boxSizing: "border-box",
-                      }}
-                      aria-label="Add to favorites"
-                      color={
-                        favorites.includes(product.id) ? "primary" : "default"
-                      }
-                      onClick={() => handleToggleFavorite(product.id)}
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                  </div>
-                  <Content style={{ padding: "5px" }}>
-                    <Typography
-                      variant="h9"
-                      component="div"
-                      style={{ marginBottom: "10px" }}
-                    >
-                      {product.category}
-                    </Typography>
-                    <Typography variant="h6" component="div">
-                      {product.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {product.description}
-                    </Typography>
-                    <Typography variant="body1" color="textPrimary">
-                      Price: ${product.price}
-                    </Typography>
-                    <IconButton
-                      aria-label="Add to cart"
-                      color={cart.includes(product.id) ? "primary" : "default"}
-                      onClick={() => handleToggleCart(product.id)}
-                    >
-                      <ShoppingCartIcon />
-                    </IconButton>
-                  </Content>
-                </RootCard>
-              </Grid>
-            ))
-          )}
-        </Grid>
+    <div className={classes.container}>
+      <div className={classes.filtersContainer}>
+        <PriceFilter onApplyFilter={onApplyFilter} />
+        <CategoryFilter
+          category={selectedCategory}
+          setCategory={handleCategoryChange}
+          categories={categories}
+        />
+        <ColorFilter
+          color={selectedColor}
+          setColor={handleColorChange}
+          colors={colors}
+        />
       </div>
+      <Grid container spacing={2}>
+        {productsListIsLoading ? (
+          <div>Loading ...</div>
+        ) : (
+          productsList.map((product) => (
+            <Grid key={product.id} item xs={12} sm={6} md={3}>
+              <RootCard>
+                <MediaImage
+                  component="img"
+                  image={product.mainImageUrl}
+                  alt={product.name}
+                />
+                <Content>
+                  <Typography variant="h6" component="div">
+                    {product.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {product.description}
+                  </Typography>
+                  <Typography variant="body1" color="textPrimary">
+                    Price: ${product.price}
+                  </Typography>
+                  <IconButton
+                    aria-label="Add to favorites"
+                    color={
+                      favorites.includes(product.id) ? "primary" : "default"
+                    }
+                    onClick={() => handleToggleFavorite(product.id)}
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Add to cart"
+                    color={cart.includes(product.id) ? "primary" : "default"}
+                    onClick={() => handleToggleCart(product.id)}
+                  >
+                    <ShoppingCartIcon />
+                  </IconButton>
+                </Content>
+              </RootCard>
+            </Grid>
+          ))
+        )}
+      </Grid>
     </div>
   );
 };

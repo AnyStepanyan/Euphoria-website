@@ -35,7 +35,7 @@ function IncrementDecrement() {
         <RemoveIcon className={classes.buttons} sx={{ fontSize: 15 }}
         onClick={() => setCount(count === 1 ? count: count -1)} />
          <div>{count} </div>
-        <AddIcon className={classes.buttons}onClick={() => setCount( count + 1)}
+        <AddIcon className={classes.buttons}onClick={() => setCount( count < 3 ? count +1 : count )}
         sx={{ fontSize: 15 }} />
         </div>
     )

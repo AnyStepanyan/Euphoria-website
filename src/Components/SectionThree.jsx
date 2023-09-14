@@ -14,7 +14,6 @@ const useStyles = createUseStyles({
       right: 'auto',
       top: -25,
     },
-    justifyContent: 'center',
   },
   childDiv: {
     position: 'relative',

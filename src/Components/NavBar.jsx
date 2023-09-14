@@ -1,5 +1,6 @@
 import { createUseStyles } from "react-jss";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const useStyles = createUseStyles({
   nav: {
@@ -63,24 +64,34 @@ const useStyles = createUseStyles({
       display: "flex",
     },
   },
+  active: {
+
+      color: 'blue'
+    }  
+
 });
 
 function NavBar({ isBurgerOpen }) {
   const classes = useStyles();
+
+  const location = useLocation()
+  const {pathname} = location
+  const splitLocation = pathname.split('/')
+  console.log(splitLocation)
 
   return (
     <nav
       className={`${classes.nav}  ${isBurgerOpen ? classes.displayFlex : ""}`}
     >
       <ul className={classes.navList}>
-        <li>
-          <Link to="#">Shop</Link>
+        <li className={splitLocation[1] === 'shop' ? classes.active: ''}>
+          <Link to="/shop">Shop</Link>
         </li>
-        <li>
+        <li className={splitLocation[1] === '' ? classes.active: ''}>
           <Link to="#">Men</Link>
         </li>
-        <li>
-          <Link to="/womenProducts">Women</Link>
+        <li className={splitLocation[1] === 'womenProducts' ? classes.active : ''}>
+          <Link to="/womenProducts" >Women</Link>
         </li>
         <li>
           <Link to="/addProduct">Add</Link>
