@@ -18,7 +18,7 @@ import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import ColorFilter from "./ColorFilter";
 import { categories } from "../constants/categories";
-import { CartContext } from "./Context";
+import CartContext from "./Context";
 import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({

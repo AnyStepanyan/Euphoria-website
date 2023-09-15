@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import fire from "../../helpers/db";
 import {
   Container,
   CssBaseline,
@@ -16,9 +15,9 @@ import {
 } from "@material-ui/core";
 import { LockRounded } from "@material-ui/icons";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { ToastContainer, toast } from "react-toastify";
-// import {ScaleLoader} from "react-spinners";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../helpers/db";
+import { toast } from "react-toastify";
 
 const Login = (props) => {
   const classes = useStyles();
@@ -26,7 +25,6 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const auth = getAuth();
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -39,22 +37,23 @@ const Login = (props) => {
   };
   const handlerLogin = () => {
     setLoading(true);
-            signInWithEmailAndPassword( auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                const data = {
-                    userId : user.uid,
-                    email: user.email
-                }
-                localStorage.setItem("user", JSON.stringify(data));
-                const storage = localStorage.getItem("user");
-                const loggedInUser = storage !== null ? JSON.parse(storage) : null;
-                props.loggedIn(loggedInUser);
-                setLoading(false);
-            }). catch(error => {
-                    toast.error(error.message);
-                    setLoading(false);
-            })
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const data = {
+          userId: user.uid,
+          email: user.email,
+        };
+        localStorage.setItem("user", JSON.stringify(data));
+        const storage = localStorage.getItem("user");
+        const loggedInUser = storage !== null ? JSON.parse(storage) : null;
+        props.loggedIn(loggedInUser);
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+      });
   };
 
   return (
@@ -119,7 +118,7 @@ const Login = (props) => {
                 variant="contained"
                 className={classes.submit}
               >
-                Sign In
+                {loading ? "Loading..." : "Sign In"}
               </Button>
               <Grid container>
                 <Grid item>

@@ -107,7 +107,7 @@ function NavBar({ isBurgerOpen }) {
             splitLocation[1] === "" ? classes.active : ""
           }`}
         >
-          <Link to="#">Men</Link>
+          <Link to="/menProducts">Men</Link>
         </li>
         <li
           className={`${classes.liClass} ${
