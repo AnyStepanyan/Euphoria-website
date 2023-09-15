@@ -2,6 +2,7 @@ import { ReactComponent as Image1 } from "../Assets/images/sectionThreeImg1.svg"
 import { ReactComponent as Image2 } from "../Assets/images/sectionThreeImg2.svg"
 import { createUseStyles } from "react-jss";
 import ButtonShopNow from "./ButtonShopNow";
+import { Link } from "react-router-dom";
 
 
 const useStyles = createUseStyles({
@@ -67,8 +68,9 @@ function SectionThree() {
           <h5> WE MADE YOUR EVERYDAY FASHION BETTER!</h5>
           <p>In our journey to improve everyday fashion, euphoria presents
             EVERYDAY wear range -Comfortable & Affordable fashion 24/7</p>
-          <ButtonShopNow />
-        </div>
+            <Link style={{textDecoration: 'none'}}  to="/menProducts">  
+                    <ButtonShopNow value='Shop Men' />
+                    </Link>        </div>
         <div>
           <Image1 className={classes.images} />
         </div>

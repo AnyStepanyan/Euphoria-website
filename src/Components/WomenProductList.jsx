@@ -23,11 +23,25 @@ import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({
   container: {
+    maxWidth: 1440,
     display: "flex",
     alignItems: "flex-start",
+    marginTop: 20,
+    justifyContent: "center",
+    margin: {
+      left: "auto",
+      right: "auto",
+      top: 17,
+    },
   },
   filtersContainer: {
     width: "25%",
+  },
+  loading: {
+    position: "absolute",
+    top: "20%",
+    left: "50%",
+    transform: "translateY(-20%) translateX(-50%)",
   },
 });
 
@@ -55,9 +69,10 @@ const Content = styled(CardContent)`
 const firestore = fire.firestore();
 
 const WomenProductList = () => {
-  const [cart, setCart] = useContext(CartContext);
+  const { cart, setCart, favorites, setFavorites } = useContext(CartContext);
+
   const classes = useStyles();
-  const [favorites, setFavorites] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
@@ -80,7 +95,9 @@ const WomenProductList = () => {
 
   const { run: filterByCategory } = useRequest(
     async ({ selectedCategory }) => {
-      let productsQuery = firestore.collection("products").where("gender", "==", "female");
+      let productsQuery = firestore
+        .collection("products")
+        .where("gender", "==", "female");
 
       if (selectedCategory) {
         productsQuery = productsQuery.where("category", "==", selectedCategory);
@@ -124,7 +141,9 @@ const WomenProductList = () => {
 
   const { run: filterByColor } = useRequest(
     async ({ selectedColor }) => {
-      let productsQuery = firestore.collection("products").where("gender", "==", "female");
+      let productsQuery = firestore
+        .collection("products")
+        .where("gender", "==", "female");
 
       if (selectedColor) {
         productsQuery = productsQuery.where(
@@ -185,7 +204,7 @@ const WomenProductList = () => {
       </div>
       <Grid container spacing={2}>
         {productsListIsLoading ? (
-          <div>Loading ...</div>
+          <div className={classes.loading}>Loading ...</div>
         ) : (
           productsList.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={3}>

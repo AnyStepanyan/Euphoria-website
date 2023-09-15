@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 
-function ButtonShopNow() {
+function ButtonShopNow({value}) {
     
     return (
         <Button variant="outlined"
@@ -35,7 +35,7 @@ function ButtonShopNow() {
                 }
             }}
         >
-            Shop Now
+           {value}
         </Button>
     )
 }

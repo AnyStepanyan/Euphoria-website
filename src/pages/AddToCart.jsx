@@ -1,13 +1,15 @@
-import IncrementDecrement from '../components/IncrementDecrement'
+import IncrementDecrement from '../Components/IncrementDecrement'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
-import PurpleButtons from '../components/PurpleButtons';
+import PurpleButtons from '../Components/PurpleButtons';
 import { Link } from "react-router-dom";
-import { CartContext } from '../components/Context';
+import CartContext  from '../Components/Context';
 import { useContext } from 'react';
 import { database } from "../helpers/db.js";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
+import { ReactComponent as EmptyCartImage } from "../Assets/images/emptyCart.svg";
+
 
 
 const useStyles = createUseStyles({
@@ -86,15 +88,30 @@ const useStyles = createUseStyles({
     },
     select: {
       cursor: 'pointer'
+    },
+    emptyCartWrapper: {
+        margin: 30,
+        textAlign: 'center',
+        '@media (max-width: 400px)': {
+            marginTop: -40, 
+        }
+    },
+    emptyCartTextDiv: {
+        color: '#807D7E',
+        '@media (max-width: 430px)': {
+            marginTop: -50, 
+        }
     }
 })
 
 function AddToCart() {
-    const [cart, setCart] = useContext(CartContext)
+    const {cart, setCart, orders, setOrders} = useContext(CartContext)
     const [products, setProducts] = useState([]);
+    const [selectedSize, setSelectedSize] = useState('');
     
 
     const classes = useStyles()
+
   
     const fetchProducts = async () => {
       await getDocs(collection(database, 'products')).then((querySnapshot) => {
@@ -105,6 +122,10 @@ function AddToCart() {
         setProducts(newData);
       });
     };
+
+    useEffect(() => {
+        fetchProducts();
+      }, []);
  
    let productsForCart = products.filter((product)=>{
         if(cart.includes(product.id)){
@@ -116,18 +137,37 @@ function AddToCart() {
     let shippingPrice = subTotal >= 100 || subTotal === 0 ? 0: 5
     let grandTotal = subTotal + shippingPrice
 
-   
-  
-    useEffect(() => {
-      fetchProducts();
-    }, []);
-
     const deleteProduct = (productId) => {
         return (
           setCart(cart.filter((id) => id !== productId))
         ) 
     }
+   
+    const handleSelectChange = (selectedSize, product) => {
+        let b
+            if(orders.length){
+            return   orders.map((elem) => {
+                if(elem.id === product.id && elem.chosenSize !== selectedSize ){
+                    elem.chosenSize = selectedSize
+                    return
+                 }
+                 else if(elem.id === product.id && elem.chosenSize === selectedSize ){
+                        return 
+             } else if(elem.id !== product.id){
+                    setOrders( [...orders, {id: product.id, chosenSize: selectedSize, 
+                        name: product.name, price: product.price }])  
+                }
+               
+                })
+            } else{
+                setOrders([ {id: product.id, chosenSize: selectedSize,
+                     name: product.name, price: product.price, }])
+            }
+            
+        
+    }
 
+    console.log(orders, 'orders')
 
     return (
         <>
@@ -145,7 +185,7 @@ function AddToCart() {
                         <div>
                             <p className={classes.boldFont}>{product.name}</p>
                             <p>color: {product.color[0]}</p>
-                            <select className={classes.select} >
+                            <select className={classes.select} onChange={(e) =>handleSelectChange(e.target.value, product)} >
                                 <option value='' selected hidden disabled>Choose Size</option>
                                 <option value='XS'>XS</option>
                                 <option value='S'>S</option>
@@ -157,14 +197,13 @@ function AddToCart() {
                     </div>
                     <div className={classes.productDetails2}>
                          <p className={classes.boldFont}>{product.price}</p>
-                        < IncrementDecrement />
                         <DeleteForeverIcon sx= {{'&:hover': {color: 'blue'}, cursor: 'pointer'}} onClick={() => deleteProduct(product.id)} />
                     </div>
                 </div>
           );
         })}   
                 
-                <div className={classes.totalWrapper}>
+               {cart.length > 0 && <div className={classes.totalWrapper}>
                 <div className={classes.total}>
                   <div>
                    <p>Sub Total</p> 
@@ -182,12 +221,29 @@ function AddToCart() {
                 
                 
                 <div className={classes.button}>
-                <Link  to="/checkout">  
+                <Link style={{textDecoration: 'none'}}  to="/checkout">  
                     <PurpleButtons   value='Proceed To Checkout'/>
+                    </Link>
+                    </div>
+                </div>} 
+            </div>
+
+            {cart.length === 0 && 
+            <div className={classes.emptyCartWrapper}>
+              <div className={classes.emptyCartImgDiv}>
+                <EmptyCartImage className={classes.img}  /> 
+                </div> 
+                <div className={classes.emptyCartTextDiv}>
+                    <p><b>Your cart is empty and sad :(</b></p>
+                    <p>Add something to make it happy!</p>
+                    <div className={classes.button}>
+                <Link style={{textDecoration: 'none'}}  to="/womenProducts">  
+                    <PurpleButtons   value='continue shopping'/>
                     </Link>
                     </div>
                 </div>
             </div>
+            }
         </>
 
     )

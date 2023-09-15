@@ -41,13 +41,13 @@ const useStyles = createUseStyles({
     "& li": {
       transition: "all 300ms ease-in-out",
       listStyle: "none",
-      "& a": {
-        textDecoration: "none",
-        color: "#807D7E",
-      },
-      "& a:hover": {
-        color: "#3C4242",
-      },
+      // "& a": {
+      //   textDecoration: "none",
+      //   color: "#807D7E",
+      // },
+      // "& a:hover": {
+      //   color: "#3C4242",
+      // },
     },
     "@media (max-width: 640px)": {
       flexDirection: "column",
@@ -64,8 +64,22 @@ const useStyles = createUseStyles({
       display: "flex",
     },
   },
+  liClass: {
+    "& a": {
+      textDecoration: "none",
+      color: "#807D7E",
+    },
+    "& a:hover": {
+      color: "#3C4242",
+    },
+  },
   active: {
-    color: "blue",
+    "& a": {
+      color: "blue",
+    },
+    "& a:hover": {
+      color: "blue",
+    },
   },
 });
 
@@ -75,26 +89,32 @@ function NavBar({ isBurgerOpen }) {
   const location = useLocation();
   const { pathname } = location;
   const splitLocation = pathname.split("/");
-  console.log(splitLocation);
 
   return (
     <nav
       className={`${classes.nav}  ${isBurgerOpen ? classes.displayFlex : ""}`}
     >
       <ul className={classes.navList}>
-        <li className={splitLocation[1] === "shop" ? classes.active : ""}>
+        <li
+          className={`${classes.liClass} ${
+            splitLocation[1] === "shop" ? classes.active : ""
+          }`}
+        >
           <Link to="/shop">Shop</Link>
         </li>
-        <li className={splitLocation[1] === "" ? classes.active : ""}>
-          <Link to="/menProducts">Men</Link>
+        <li
+          className={`${classes.liClass} ${
+            splitLocation[1] === "" ? classes.active : ""
+          }`}
+        >
+          <Link to="#">Men</Link>
         </li>
         <li
-          className={splitLocation[1] === "womenProducts" ? classes.active : ""}
+          className={`${classes.liClass} ${
+            splitLocation[1] === "womenProducts" ? classes.active : ""
+          }`}
         >
           <Link to="/womenProducts">Women</Link>
-        </li>
-        <li>
-          <Link to="/addProduct">Add</Link>
         </li>
       </ul>
     </nav>

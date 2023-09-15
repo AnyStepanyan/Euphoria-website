@@ -1,8 +1,20 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import IncrementDecrement from '../components/IncrementDecrement'
+import Header from '../Components/Header'
+import Footer from '../Components/Footer'
+import IncrementDecrement from '../Components/IncrementDecrement';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
+import CartContext  from '../Components/Context';
+import { useContext } from 'react';
+import { database } from "../helpers/db.js";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import {  IconButton } from "@mui/material";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { ReactComponent as EmptyWhishListImage } from "../Assets/images/emptyWhishList.svg";
+import PurpleButtons from "../Components/PurpleButtons";
+import { Link } from "react-router-dom";
+
+
 
 const useStyles = createUseStyles({
     addToCartWrapper: {
@@ -59,36 +71,115 @@ const useStyles = createUseStyles({
     button: {
         display: 'flex',
         justifyContent: 'center'
-    }
+    },
+    emptyWhishtListWrapper: {
+      margin: 30,
+      textAlign: 'center',
+      
+  },
+  emptyWhishtListTextDiv: {
+      color: '#807D7E',
+   
+  }
 })
 
 function WhishList() {
+    const {cart, setCart, favorites, setFavorites} = useContext(CartContext)
+    const [products, setProducts] = useState([]);
     const classes = useStyles()
+
+    const handleToggleCart = (productId) => {
+        setCart((previousToCart) => {
+          if (previousToCart.includes(productId)) {
+            return previousToCart;
+          } else {
+            return [...previousToCart, productId];
+          }
+        });
+      };
+
+    const fetchProducts = async () => {
+        await getDocs(collection(database, 'products')).then((querySnapshot) => {
+          const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setProducts(newData);
+        });
+      };
+   
+     let productsForCart = products.filter((product)=>{
+          if(favorites.includes(product.id)){
+              return product
+          }
+      } )
+    
+      useEffect(() => {
+        fetchProducts();
+      }, []);
+  
+      const deleteProduct = (productId) => {
+          return (
+            setFavorites(favorites.filter((id) => id !== productId))
+          ) 
+      }
+  
 
     return (
         <>
             <div className={classes.addToCartWrapper}>
-                <div className={classes.productsInCart}>
+            {productsForCart.map((product) => {
+          return (
+            <div className={classes.productsInCart} key={product.id}>
                     <div className={classes.productsDetails}>
                         <div className={classes.imgDiv}>
                             <img
-                                src='https://firebasestorage.googleapis.com/v0/b/euphoria-website-d2bac.appspot.com/o/womenProducts%2Fwoman01.svg?alt=media&token=2e606760-3cfa-474a-b873-df7e40f83e1e'
-                                alt='sdfsddsf'
+                                src={product.mainImageUrl}
+                                alt={product.name}
                                 className={classes.img} />
                         </div>
                         <div>
-                            <p className={classes.boldFont}>title</p>
-                            <p>color: yellow</p>
-                            <p>Size: M</p>
+                            <p className={classes.boldFont}>{product.name}</p>
+                            <p>color: {product.color[0]}</p>
                         </div>
                     </div>
                     <div className={classes.productDetails2}>
-                         <p className={classes.boldFont}>$29.00</p>
-                        <DeleteForeverIcon />
+                         <p className={classes.boldFont}>{product.price}</p>
+                        <DeleteForeverIcon sx= {{'&:hover': {color: 'blue'}, cursor: 'pointer'}} onClick={() => deleteProduct(product.id)} />
+                        <IconButton
+                    aria-label="Add to cart"
+                    color={cart.includes(product.id) ? "primary" : "default"}
+                    onClick={() => handleToggleCart(product.id)}
+                  >
+                    <ShoppingCartIcon />
+                  </IconButton>
                     </div>
-                       
+                </div>
+          );
+        })}   
+            </div>
+            {favorites.length === 0 && 
+            <div className={classes.emptyWhishtListWrapper}>
+              <div>
+                <EmptyWhishListImage className={classes.img}  /> 
+                </div> 
+                <div >
+                  <div className={classes.emptyWhishtListTextDiv}>
+                    <p><b>Your wishlist is empty.</b></p>
+                    <p>You don’t have any products in the wishlist yet. 
+                       You will find a lot
+                 of interesting products on our Shop page.</p>
+                  </div>
+                    
+                    <div className={classes.button}>
+                <Link  to="/womenProducts">  
+                    <PurpleButtons   value='continue shopping'/>
+                    </Link>
+                    </div>
                 </div>
             </div>
+            }
+            
         </>
 
     )
