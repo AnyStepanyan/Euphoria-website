@@ -18,7 +18,7 @@ import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import ColorFilter from "./ColorFilter";
 import { categories } from "../constants/categories";
-import { CartContext } from "./Context";
+import CartContext from "./Context";
 import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({
@@ -55,7 +55,7 @@ const Content = styled(CardContent)`
 const firestore = fire.firestore();
 
 const MenProductList = () => {
-  const [cart, setCart] = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
