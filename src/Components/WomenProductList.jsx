@@ -80,8 +80,7 @@ const WomenProductList = () => {
 
   const { run: filterByCategory } = useRequest(
     async ({ selectedCategory }) => {
-      let productsQuery = firestore.collection("products");
-      console.log("selectedCategory", selectedCategory);
+      let productsQuery = firestore.collection("products").where("gender", "==", "female");
 
       if (selectedCategory) {
         productsQuery = productsQuery.where("category", "==", selectedCategory);
@@ -121,13 +120,11 @@ const WomenProductList = () => {
   const handleColorChange = (color) => {
     setSelectedColor(color);
     filterByColor({ selectedColor: color });
-    console.log("col", { selectedColor });
   };
 
   const { run: filterByColor } = useRequest(
     async ({ selectedColor }) => {
-      let productsQuery = firestore.collection("products");
-      console.log("selectedColor", selectedColor);
+      let productsQuery = firestore.collection("products").where("gender", "==", "female");
 
       if (selectedColor) {
         productsQuery = productsQuery.where(
@@ -142,7 +139,7 @@ const WomenProductList = () => {
         ...doc.data(),
         id: doc.id,
       }));
-      console.log("products", products);
+
       mutateProductsList(products);
     },
     {
@@ -154,6 +151,7 @@ const WomenProductList = () => {
     async ({ minPrice, maxPrice }) => {
       const snapshot = await firestore
         .collection("products")
+        .where("gender", "==", "female")
         .where("price", ">=", minPrice)
         .where("price", "<=", maxPrice)
         .get();

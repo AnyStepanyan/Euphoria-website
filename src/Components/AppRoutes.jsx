@@ -8,7 +8,6 @@ import Main from "./Main";
 import AddToCart from "../pages/AddToCart";
 import WhishList from "../pages/WhishList";
 import Checkout from "../pages/Checkout";
-import App from "../App";
 
 export const AppRoutes = () => {
   return (
