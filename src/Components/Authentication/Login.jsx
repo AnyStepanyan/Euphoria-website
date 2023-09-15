@@ -26,7 +26,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const auth = getAuth(fire);
+  const auth = getAuth();
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -39,10 +39,9 @@ const Login = (props) => {
   };
   const handlerLogin = () => {
     setLoading(true);
-        fire.auth()
-            .signInWithEmailAndPassword( auth, email, password)
-            .then(response => {
-                const {user} = response;
+            signInWithEmailAndPassword( auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
                 const data = {
                     userId : user.uid,
                     email: user.email

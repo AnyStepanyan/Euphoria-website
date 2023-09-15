@@ -16,7 +16,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import fire from "../../helpers/db";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { AuthErrorCodes, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = (props) => {
   const classes = useStyles();
@@ -46,6 +46,11 @@ const SignUp = (props) => {
                 
               })
       .catch((error) => {
+        if(error.code === AuthErrorCodes.WEAK_PASSWORD ||
+          error.code === AuthErrorCodes.INVALID_PASSWORD ||
+          error.code === AuthErrorCodes.USER_DELETED){
+          toast.error(error.message)
+        }
         switch (error.code) {
           case "auth/email-already-in-use":
             toast.error(error.message);
@@ -86,12 +91,12 @@ const SignUp = (props) => {
               Sign Up
             </Typography>
             <ValidatorForm
-              // onSubmit={handlerSignUp}
-              // onError={errors => {
-              //     for (const err of errors){
-              //         console.log(err.props.errorMessages[0])
-              //     }
-              // }}
+               onSubmit={handleSignUp}
+              onError={errors => {
+                   for (const error of errors){
+                   console.log(error.props.errorMessages[0])
+                 }
+             }}
               className={classes.form}
             >
               <TextValidator

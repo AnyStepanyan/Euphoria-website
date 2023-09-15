@@ -1,0 +1,12 @@
+import { getAuth, signOut } from "firebase/auth";
+
+const SignOut = () => {
+    const auth = getAuth();
+signOut(auth).then(() => {
+  // put the link to SignUp page
+}).catch((error) => {
+  console.log(error)
+});    
+}
+
+export default SignOut;
