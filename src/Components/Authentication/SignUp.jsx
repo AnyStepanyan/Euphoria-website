@@ -17,8 +17,12 @@ import fire from "../../helpers/db";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthErrorCodes, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import CartContext from "../Context";
+import { useContext } from 'react';
 
 const SignUp = (props) => {
+  const {userEmail, setUserEmail} = useContext(CartContext)
+
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,6 +47,13 @@ const SignUp = (props) => {
                 console.log(userCredential,"--userCredential")
                 const user = userCredential.user;
                 console.log("User registered:", user);
+                const data = {
+                  userId : user.uid,
+                  email: user.email
+              }
+              localStorage.setItem("user", JSON.stringify(data));
+                const storage = localStorage.getItem("user");
+      setUserEmail(storage)
                 
               })
       .catch((error) => {
@@ -65,6 +76,7 @@ const SignUp = (props) => {
       });
   };
 
+
   useEffect(() => {
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
       if (value !== password) {
@@ -75,8 +87,13 @@ const SignUp = (props) => {
     return () => {
       ValidatorForm.removeValidationRule("isPasswordMatch");
     };
+
+   
   }, [password]);
 
+  
+  const storage = localStorage.getItem("user");
+      setUserEmail(storage)
   return (
     <Container component="main" maxWidth="xs">
       <Card className={classes.card}>

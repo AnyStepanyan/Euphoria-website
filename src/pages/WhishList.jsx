@@ -1,9 +1,9 @@
-import Header from '../Components/Header'
-import Footer from '../Components/Footer'
-import IncrementDecrement from '../Components/IncrementDecrement';
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import IncrementDecrement from '../components/IncrementDecrement';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createUseStyles } from 'react-jss';
-import CartContext  from '../Components/Context';
+import CartContext  from '../components/Context';
 import { useContext } from 'react';
 import { database } from "../helpers/db.js";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import { collection, getDocs } from "firebase/firestore";
 import {  IconButton } from "@mui/material";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { ReactComponent as EmptyWhishListImage } from "../Assets/images/emptyWhishList.svg";
-import PurpleButtons from "../Components/PurpleButtons";
+import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
 
 

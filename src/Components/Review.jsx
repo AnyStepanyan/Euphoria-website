@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CartContext } from './Context';
+import  CartContext  from './Context';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';

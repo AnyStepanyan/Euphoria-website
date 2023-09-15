@@ -89,7 +89,6 @@ function Header() {
                         }
                     }} onClick = {toggleSearchButton}/>
                     <Favourite />
-                    <User onClick = {handleMenu}/>
                     <ProfileDropdown /> 
                     <ShoppingCart />                    
                 </div>

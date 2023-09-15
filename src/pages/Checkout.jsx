@@ -17,7 +17,7 @@ import PaymentForm from '../components/PaymentForm';
 import Review from '../components/Review';
 import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
-import { CartContext } from '../components/Context';
+import  CartContext  from '../components/Context';
 import { useContext } from 'react';
 
 
