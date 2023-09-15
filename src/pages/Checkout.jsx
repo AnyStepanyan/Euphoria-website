@@ -9,6 +9,9 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 import AddressForm from '../components/AddressForm';
 import PaymentForm from '../components/PaymentForm';
 import Review from '../components/Review';
@@ -16,6 +19,7 @@ import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
 import { CartContext } from '../components/Context';
 import { useContext } from 'react';
+
 
 
 const steps = ['Shipping address', 'Review your order','Payment details'];

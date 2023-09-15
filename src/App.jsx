@@ -1,28 +1,43 @@
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Footer from "./components/Footer";
+import Header from "./Components/Header";
+import Main from "./Components/Main";
+import Footer from "./Components/Footer";
 import { useState } from "react";
-// import Login from './Authentication/Login';
-// import SignUp from './Authentication/SignUp';
-// import DetailPage from './components/Details/DetailPage'
-import { AppRoutes } from "./components/AppRoutes";
-import { CartContext } from "./components/Context";
+import Login from '../src/Components/Authentication/Login';
+import SignUp from '../src/Components/Authentication/SignUp';
+import DetailPage from '../src/Components/Details/DetailPage'
+import { AppRoutes } from "./Components/AppRoutes";
+import  CartContext  from "./Components/Context";
+import NavBar from "../src/Components/NavBar";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+const user = auth.currentUser;
 
 function App() {
   const [cart, setCart] = useState([])
   const [favorites, setFavorites] = useState([])
   const [orders, setOrders] = useState([])
-  return (
-    <>
-    {/* <NavBar /> */}
-    {/* {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)} */}
-      <CartContext.Provider value={{cart, setCart,favorites, setFavorites,orders, setOrders}}>
-      <Header />
-      <AppRoutes />
-      <Footer />
-      </CartContext.Provider>
-    </>
-  );
+  const [toggleForm, setToggleForm] = useState(true);
+  const formMode = () => {
+    setToggleForm(!toggleForm);
+  }
+
+  if (user) {
+    return (
+      <>
+       <CartContext.Provider value={{cart, setCart,favorites, setFavorites,orders, setOrders}}>
+        <Header />
+        <AppRoutes />
+        <Main />
+        <Footer />
+        </CartContext.Provider>
+      </> )
+  } else {
+    return (
+      <>
+      { <NavBar /> }
+      {toggleForm ? (<Login toggle = {() => formMode()} />) : (<SignUp toggle = {() => formMode()} />)}
+        </> )
+  }
 }
 
 export default App;

@@ -9,6 +9,8 @@ import { ReactComponent as Logo } from "../Assets/images/logo.svg";
 import { createUseStyles } from 'react-jss';
 import { useEffect, useState } from 'react';
 import NavBarMobile from "./NavBarMobile";
+import ProfileDropdown from "./ProfileDropdown";
+import "./ProfileDropdown.css";
 
 
 const useStyles = createUseStyles({
@@ -87,7 +89,8 @@ function Header() {
                         }
                     }} onClick = {toggleSearchButton}/>
                     <Favourite />
-                    <User />
+                    <User onClick = {handleMenu}/>
+                    <ProfileDropdown /> 
                     <ShoppingCart />                    
                 </div>
             </div>
@@ -95,4 +98,4 @@ function Header() {
     )
 }
 
-export default Header
+export default Header;
