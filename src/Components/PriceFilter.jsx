@@ -26,7 +26,6 @@ const PriceFilter = ({ onApplyFilter }) => {
       spacing={2}
       style={{
         flex: "0 0 300px",
-        padding: "5px",
         marginRight: "32px",
         height: "100%",
       }}
@@ -36,6 +35,7 @@ const PriceFilter = ({ onApplyFilter }) => {
           label="Min Price"
           type="number"
           value={minPrice}
+          style={{ backgroundColor: "white" }}
           onChange={(e) =>
             setMinPrice((previousValue) =>
               valueInRange({
@@ -55,6 +55,7 @@ const PriceFilter = ({ onApplyFilter }) => {
           label="Max Price"
           type="number"
           value={maxPrice}
+          style={{ backgroundColor: "white" }}
           onChange={(e) =>
             setMaxPrice((previousValue) =>
               valueInRange({

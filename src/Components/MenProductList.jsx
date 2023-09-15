@@ -23,25 +23,11 @@ import { colors } from "../constants/colors";
 
 const useStyles = createUseStyles({
   container: {
-    maxWidth: 1440,
     display: "flex",
     alignItems: "flex-start",
-    marginTop: 20,
-    justifyContent: "center",
-    margin: {
-      left: "auto",
-      right: "auto",
-      top: 17,
-    },
   },
   filtersContainer: {
     width: "25%",
-  },
-  loading: {
-    position: "absolute",
-    top: "20%",
-    left: "50%",
-    transform: "translateY(-20%) translateX(-50%)",
   },
 });
 
@@ -68,11 +54,10 @@ const Content = styled(CardContent)`
 
 const firestore = fire.firestore();
 
-const WomenProductList = () => {
-  const { cart, setCart, favorites, setFavorites } = useContext(CartContext);
-
+const MenProductList = () => {
+  const [cart, setCart] = useContext(CartContext);
   const classes = useStyles();
-
+  const [favorites, setFavorites] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
@@ -97,7 +82,7 @@ const WomenProductList = () => {
     async ({ selectedCategory }) => {
       let productsQuery = firestore
         .collection("products")
-        .where("gender", "==", "female");
+        .where("gender", "==", "male");
 
       if (selectedCategory) {
         productsQuery = productsQuery.where("category", "==", selectedCategory);
@@ -128,7 +113,7 @@ const WomenProductList = () => {
   } = useRequest(async () => {
     const snapshot = await firestore
       .collection("products")
-      .where("gender", "==", "female")
+      .where("gender", "==", "male")
       .get();
     const result = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result;
@@ -143,7 +128,7 @@ const WomenProductList = () => {
     async ({ selectedColor }) => {
       let productsQuery = firestore
         .collection("products")
-        .where("gender", "==", "female");
+        .where("gender", "==", "male");
 
       if (selectedColor) {
         productsQuery = productsQuery.where(
@@ -158,7 +143,6 @@ const WomenProductList = () => {
         ...doc.data(),
         id: doc.id,
       }));
-
       mutateProductsList(products);
     },
     {
@@ -169,8 +153,8 @@ const WomenProductList = () => {
   const { run: onApplyFilter } = useRequest(
     async ({ minPrice, maxPrice }) => {
       const snapshot = await firestore
+        .where("gender", "==", "male")
         .collection("products")
-        .where("gender", "==", "female")
         .where("price", ">=", minPrice)
         .where("price", "<=", maxPrice)
         .get();
@@ -204,7 +188,7 @@ const WomenProductList = () => {
       </div>
       <Grid container spacing={2}>
         {productsListIsLoading ? (
-          <div className={classes.loading}>Loading ...</div>
+          <div>Loading ...</div>
         ) : (
           productsList.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={3}>
@@ -270,4 +254,4 @@ const WomenProductList = () => {
   );
 };
 
-export default WomenProductList;
+export default MenProductList;

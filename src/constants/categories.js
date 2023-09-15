@@ -1,9 +1,9 @@
 export const categories = [
-  "",
   "T-Shirt",
   "Pants",
   "Hoodie",
   "Sweater",
+  "Jeans",
   "Jacket",
   "Dress",
   "Shorts",

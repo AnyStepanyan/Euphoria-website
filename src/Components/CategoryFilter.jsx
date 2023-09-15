@@ -13,9 +13,17 @@ const CategoryFilter = ({ category, setCategory }) => {
   return (
     <FormControl
       fullWidth
-      style={{ padding: "7px", width: "300px", marginTop: "25px" }}
+      style={{
+        boxSize: "border-box",
+        maxWidth: "300px",
+        width: "100%",
+        marginTop: "25px",
+        backgroundColor: "white",
+      }}
     >
-      <InputLabel>Choose Category</InputLabel>
+      <InputLabel style={{ maxWidth: "300px", width: "100%" }}>
+        Choose Category
+      </InputLabel>
       <Select value={category} onChange={handleChange}>
         <MenuItem value="">All Categories</MenuItem>
         {categories.map((cat) => (
