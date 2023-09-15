@@ -112,7 +112,6 @@ function AddToCart() {
 
     const classes = useStyles()
 
-    
   
     const fetchProducts = async () => {
       await getDocs(collection(database, 'products')).then((querySnapshot) => {
@@ -123,6 +122,10 @@ function AddToCart() {
         setProducts(newData);
       });
     };
+
+    useEffect(() => {
+        fetchProducts();
+      }, []);
  
    let productsForCart = products.filter((product)=>{
         if(cart.includes(product.id)){
@@ -134,23 +137,37 @@ function AddToCart() {
     let shippingPrice = subTotal >= 100 || subTotal === 0 ? 0: 5
     let grandTotal = subTotal + shippingPrice
 
-   
-  
-   
-
     const deleteProduct = (productId) => {
         return (
           setCart(cart.filter((id) => id !== productId))
         ) 
     }
-    const handleSelectChange = (selectedOption, productId) => {
+   
+    const handleSelectChange = (selectedSize, product) => {
+        let b
+            if(orders.length){
+            return   orders.map((elem) => {
+                if(elem.id === product.id && elem.chosenSize !== selectedSize ){
+                    elem.chosenSize = selectedSize
+                    return
+                 }
+                 else if(elem.id === product.id && elem.chosenSize === selectedSize ){
+                        return 
+             } else if(elem.id !== product.id){
+                    setOrders( [...orders, {id: product.id, chosenSize: selectedSize, 
+                        name: product.name, price: product.price }])  
+                }
+               
+                })
+            } else{
+                setOrders([ {id: product.id, chosenSize: selectedSize,
+                     name: product.name, price: product.price, }])
             }
+            
+        
+    }
 
-    useEffect(() => {
-        fetchProducts();
-      }, []);
-
-    console.log(cart, 'cart')
+    console.log(orders, 'orders')
 
     return (
         <>
@@ -168,7 +185,7 @@ function AddToCart() {
                         <div>
                             <p className={classes.boldFont}>{product.name}</p>
                             <p>color: {product.color[0]}</p>
-                            <select className={classes.select} onChange={(e) =>handleSelectChange(e.target.value, product.id)} >
+                            <select className={classes.select} onChange={(e) =>handleSelectChange(e.target.value, product)} >
                                 <option value='' selected hidden disabled>Choose Size</option>
                                 <option value='XS'>XS</option>
                                 <option value='S'>S</option>
@@ -180,7 +197,6 @@ function AddToCart() {
                     </div>
                     <div className={classes.productDetails2}>
                          <p className={classes.boldFont}>{product.price}</p>
-                        < IncrementDecrement />
                         <DeleteForeverIcon sx= {{'&:hover': {color: 'blue'}, cursor: 'pointer'}} onClick={() => deleteProduct(product.id)} />
                     </div>
                 </div>
@@ -205,7 +221,7 @@ function AddToCart() {
                 
                 
                 <div className={classes.button}>
-                <Link  to="/checkout">  
+                <Link style={{textDecoration: 'none'}}  to="/checkout">  
                     <PurpleButtons   value='Proceed To Checkout'/>
                     </Link>
                     </div>
@@ -221,7 +237,7 @@ function AddToCart() {
                     <p><b>Your cart is empty and sad :(</b></p>
                     <p>Add something to make it happy!</p>
                     <div className={classes.button}>
-                <Link  to="/womenProducts">  
+                <Link style={{textDecoration: 'none'}}  to="/womenProducts">  
                     <PurpleButtons   value='continue shopping'/>
                     </Link>
                     </div>

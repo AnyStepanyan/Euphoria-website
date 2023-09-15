@@ -3,6 +3,7 @@ import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import { collection, getDocs } from "firebase/firestore";
 import { database } from "../helpers/db.js";
 import { createUseStyles } from "react-jss";
+import { Link } from "react-router-dom";
 
 const useStyles = createUseStyles({
   manCategoryWrapper: {
@@ -69,7 +70,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function HomeMenOrWomen({ genderFolder, title }) {
+function HomeMenOrWomen({ genderFolder, title, href }) {
   const [products, setProducts] = useState([]);
 
   const classes = useStyles();
@@ -103,7 +104,10 @@ function HomeMenOrWomen({ genderFolder, title }) {
 
               <div className={classes.productInfo}>
                 <p>{product.name}</p>
+                <Link style={{textDecoration: 'none'}}  to={href}>  
                 <TrendingFlatIcon className={classes.arrowIcon} />
+                    </Link>
+                
               </div>
             </div>
           );

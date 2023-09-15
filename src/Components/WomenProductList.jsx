@@ -17,20 +17,37 @@ import { useRequest } from "ahooks";
 import { createUseStyles } from "react-jss";
 import CategoryFilter from "./CategoryFilter";
 import { categories } from "../constants/categories";
-import CartContext from "../Components/Context";
+
+
 // import { WhishListContext } from "./Context";
+
+import { CartContext } from "./Context";
+
 
 
 
 const useStyles = createUseStyles({
   container: {
+    maxWidth: 1440,
     display: "flex",
     alignItems: "flex-start",
     marginTop: 20,
+    justifyContent: 'center',
+    margin: {
+      left: 'auto',
+      right: 'auto',
+      top: 17,
+  },
   },
   filtersContainer: {
     width: "25%",
   },
+  loading: {
+    position: 'absolute',
+    top: '20%',
+    left: '50%',
+    transform: 'translateY(-20%) translateX(-50%)'
+  }
 });
 
 const RootCard = styled(Card)`
@@ -83,6 +100,8 @@ const WomenProductList = () => {
       }
     });
   };
+
+
 
   const { run: filterByCategory } = useRequest(
     async ({ selectedCategory }) => {
@@ -153,7 +172,7 @@ const WomenProductList = () => {
       </div>
       <Grid container spacing={2}>
         {productsListIsLoading ? (
-          <div>Loading ...</div>
+          <div className={classes.loading}>Loading ...</div>
         ) : (
           productsList.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={3}>

@@ -7,8 +7,8 @@ function Main() {
     <>
       <DemoCarousel />
       <SectionThree />
-      <HomeMenOrWomen genderFolder="menProducts" title="Men" />
-      <HomeMenOrWomen genderFolder="womenProducts" title="Women" />
+      <HomeMenOrWomen genderFolder="menProducts" title="Men" href='/menProducts' />
+      <HomeMenOrWomen genderFolder="womenProducts" title="Women" href='/womenProducts'/>
     </>
   );
 }
