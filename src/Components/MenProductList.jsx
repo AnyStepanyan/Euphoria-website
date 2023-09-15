@@ -54,7 +54,7 @@ const Content = styled(CardContent)`
 
 const firestore = fire.firestore();
 
-const WomenProductList = () => {
+const MenProductList = () => {
   const [cart, setCart] = useContext(CartContext);
   const classes = useStyles();
   const [favorites, setFavorites] = useState([]);
@@ -112,7 +112,7 @@ const WomenProductList = () => {
   } = useRequest(async () => {
     const snapshot = await firestore
       .collection("products")
-      .where("gender", "==", "female")
+      .where("gender", "==", "male")
       .get();
     const result = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return result;
@@ -253,4 +253,4 @@ const WomenProductList = () => {
   );
 };
 
-export default WomenProductList;
+export default MenProductList;
