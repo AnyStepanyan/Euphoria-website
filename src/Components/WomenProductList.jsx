@@ -20,6 +20,9 @@ import ColorFilter from "./ColorFilter";
 import { categories } from "../constants/categories";
 import  CartContext  from "./Context";
 import { colors } from "../constants/colors";
+import { useEffect } from "react";
+import { database } from "../helpers/db.js";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 
 const useStyles = createUseStyles({
   container: {
@@ -69,7 +72,7 @@ const Content = styled(CardContent)`
 const firestore = fire.firestore();
 
 const WomenProductList = () => {
-  const { cart, setCart, favorites, setFavorites } = useContext(CartContext);
+  const { cart, setCart,userEmail, setUserEmail, favorites, setFavorites } = useContext(CartContext);
 
   const classes = useStyles();
 
@@ -91,6 +94,7 @@ const WomenProductList = () => {
         return [...previousToCart, productId];
       }
     });
+  
   };
 
   const { run: filterByCategory } = useRequest(
@@ -186,6 +190,17 @@ const WomenProductList = () => {
       manual: true,
     }
   );
+  
+//   const addCart= async () => { 
+//     try {
+//         const docRef = doc(database, "users", 'cart')
+//         const userId = await JSON.parse(userEmail).userId
+//         setDoc(docRef, {userId: cart}, {merge: true})
+//         console.log("Document written with ID: ", docRef.id);
+//       } catch (e) {
+//         console.error("Error adding document: ", e);
+//       }
+// }
 
   return (
     <div className={classes.container}>

@@ -97,17 +97,17 @@ function NavBar({ isBurgerOpen }) {
       <ul className={classes.navList}>
         <li
           className={`${classes.liClass} ${
-            splitLocation[1] === "shop" ? classes.active : ""
-          }`}
-        >
-          <Link to="/shop">Shop</Link>
-        </li>
-        <li
-          className={`${classes.liClass} ${
             splitLocation[1] === "" ? classes.active : ""
           }`}
         >
-          <Link to="#">Men</Link>
+          <Link to="/">Shop</Link>
+        </li>
+        <li
+          className={`${classes.liClass} ${
+            splitLocation[1] === "menProducts" ? classes.active : ""
+          }`}
+        >
+          <Link to="/menProducts">Men</Link>
         </li>
         <li
           className={`${classes.liClass} ${

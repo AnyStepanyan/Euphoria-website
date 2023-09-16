@@ -13,7 +13,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { ReactComponent as EmptyWhishListImage } from "../Assets/images/emptyWhishList.svg";
 import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
-
+import {doc, setDoc } from "firebase/firestore";
 
 
 const useStyles = createUseStyles({
@@ -107,6 +107,17 @@ function WhishList() {
           setProducts(newData);
         });
       };
+
+    //   const addCart= async () => { 
+    //     try {
+    //         const docRef = doc(database, "users", 'cart')
+    //         setDoc(docRef, {cartItem: cart}, {merge: true})
+    //         console.log("Document written with ID: ", docRef.id);
+    //       } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //       }
+    // }
+
    
      let productsForCart = products.filter((product)=>{
           if(favorites.includes(product.id)){
@@ -114,9 +125,10 @@ function WhishList() {
           }
       } )
     
-      useEffect(() => {
-        fetchProducts();
-      }, []);
+      // useEffect(() => {
+      //   fetchProducts();
+      //   addCart()
+      // }, [cart]);
   
       const deleteProduct = (productId) => {
           return (
@@ -172,7 +184,7 @@ function WhishList() {
                   </div>
                     
                     <div className={classes.button}>
-                <Link  to="/womenProducts">  
+                <Link style={{textDecoration: 'none'}}  to="/womenProducts">  
                     <PurpleButtons   value='continue shopping'/>
                     </Link>
                     </div>

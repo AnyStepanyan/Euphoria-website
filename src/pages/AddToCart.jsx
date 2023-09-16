@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import CartContext  from '../components/Context';
 import { useContext } from 'react';
 import { database } from "../helpers/db.js";
+import { collection, addDoc, doc, setDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
 import { ReactComponent as EmptyCartImage } from "../Assets/images/emptyCart.svg";
-
 
 
 const useStyles = createUseStyles({
@@ -105,7 +105,7 @@ const useStyles = createUseStyles({
 })
 
 function AddToCart() {
-    const {cart, setCart, orders, setOrders} = useContext(CartContext)
+    const {cart, setCart, orders, userEmail, setUserEmail, setOrders,cartFireStore, setCartFireStore} = useContext(CartContext)
     const [products, setProducts] = useState([]);
     const [selectedSize, setSelectedSize] = useState('');
     
@@ -123,9 +123,39 @@ function AddToCart() {
       });
     };
 
+    // const fetchCarts = async () => {
+    //     const docRef = doc(database, 'users', 'cart')
+    //     try{
+    //         const docSnap = await getDoc(docRef)
+    //         setCartFireStore(docSnap.data().userId)
+    //         console.log('setCartFireStore done')
+    //     }catch(e) {
+    //         console.log(e)
+    //     }
+    //   };
+
+   
+    //   const addCart= async () => { 
+    //     try {
+    //         const docRef = doc(database, "users", 'cart')
+             
+    //         setDoc(docRef, {userId: cart}, {merge: true})
+    //         console.log("Document written with ID: ", docRef.id);
+    //       } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //       }
+    // }
+    
+    console.log()
+
     useEffect(() => {
-        fetchProducts();
+        fetchProducts(); 
       }, []);
+
+   
+
+      
+  
  
    let productsForCart = products.filter((product)=>{
         if(cart.includes(product.id)){
@@ -139,7 +169,7 @@ function AddToCart() {
 
     const deleteProduct = (productId) => {
         return (
-          setCart(cart.filter((id) => id !== productId))
+          setCart(cart.filter((id) => id !== productId) )
         ) 
     }
    
@@ -167,7 +197,6 @@ function AddToCart() {
         
     }
 
-    console.log(orders, 'orders')
 
     return (
         <>

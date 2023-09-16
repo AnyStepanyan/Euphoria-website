@@ -9,10 +9,9 @@ function User() {
     const {pathname} = location
     const splitLocation = pathname.split('/')
     return (
-        <Link to="/user" onClick={ProfileDropdown}> 
-        <PersonOutlineOutlinedIcon sx={{ fontSize: 31, color: `${splitLocation[1] === 'user' ? 'blue': '#807D7E'}`,
+        <Link to="/userPage" > 
+        <PersonOutlineOutlinedIcon sx={{ fontSize: 31, color: `${splitLocation[1] === 'userPage' ? 'blue': '#807D7E'}`,
           cursor: 'pointer', '&:hover': {color: 'blue'} }} 
-        //   onClick={ProfileDropdown}
           />
           </Link>
     )

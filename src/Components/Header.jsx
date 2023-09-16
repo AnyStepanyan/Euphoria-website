@@ -89,8 +89,9 @@ function Header() {
                         }
                     }} onClick = {toggleSearchButton}/>
                     <Favourite />
-                    <ProfileDropdown /> 
-                    <ShoppingCart />                    
+                    <User /> 
+                    <ShoppingCart /> 
+                                   
                 </div>
             </div>
         </header>
