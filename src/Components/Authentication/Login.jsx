@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   CssBaseline,
@@ -13,13 +13,20 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
-import { LockRounded } from "@material-ui/icons";
+import { Email, LockRounded } from "@material-ui/icons";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import CartContext from "../Context";
+import { useContext } from 'react';
+// import {ScaleLoader} from "react-spinners";
 import { auth } from "../../helpers/db";
-import { toast } from "react-toastify";
+
 
 const Login = (props) => {
+  const {userEmail, setUserEmail} = useContext(CartContext)
+
+
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,6 +62,9 @@ const Login = (props) => {
         setLoading(false);
       });
   };
+
+  const storage = localStorage.getItem("user");
+  setUserEmail(storage)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -98,7 +108,7 @@ const Login = (props) => {
                 onChange={handlePassword}
                 name="password"
                 value={password}
-                validators={["required", "isEmail"]}
+                validators={["required"]}
                 errorMessages={["this field is required"]}
                 autoComplete="off"
               />
@@ -117,6 +127,7 @@ const Login = (props) => {
                 fullWidth
                 variant="contained"
                 className={classes.submit}
+
               >
                 {loading ? "Loading..." : "Sign In"}
               </Button>

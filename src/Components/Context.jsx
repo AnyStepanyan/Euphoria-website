@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const CartContext = createContext([]);
+  const CartContext = createContext();
 
-export default CartContext;
+  export default CartContext
 // export const WhishListContext = createContext()

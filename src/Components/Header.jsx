@@ -69,35 +69,31 @@ function Header() {
   }, [isBurgerOpen, isSearchInputOpen]);
 
   return (
-    <header>
-      <div className={classes.headerWrapper}>
-        <BurgerMenu onClick={toggleMenu} isBurgerOpen={isBurgerOpen} />
-        <Logo className={classes.logo} />
-        <NavBar />
-        <Search isSearchInputOpen={isSearchInputOpen} />
-        <NavBarMobile onClick={toggleMenu} isBurgerOpen={isBurgerOpen} />
+        <header>
+            <div className={classes.headerWrapper}>
+                <BurgerMenu onClick = {toggleMenu} isBurgerOpen={isBurgerOpen}/>
+                <Logo className={classes.logo} />
+                <NavBar/>
+                <Search   isSearchInputOpen={isSearchInputOpen} />
+                <NavBarMobile onClick={toggleMenu} isBurgerOpen={isBurgerOpen} />
 
-        <div className={classes.icons}>
-          <SearchIcon
-            sx={{
-              fontSize: 30,
-              color: "gray",
-              display: "none",
-              cursor: "pointer",
-              "@media (max-width: 960px)": {
-                display: "flex",
-              },
-            }}
-            onClick={toggleSearchButton}
-          />
-          <Favourite />
-          <User onClick={() => ({})} />
-          <ProfileDropdown />
-          <ShoppingCart />
-        </div>
-      </div>
-    </header>
+
+
+                <div className={classes.icons} >
+                    <SearchIcon sx={{
+                        fontSize: 30, color: 'gray', display: 'none', cursor: 'pointer',
+                        '@media (max-width: 960px)': {
+                            display: 'flex'
+                        }
+                    }} onClick = {toggleSearchButton}/>
+                    <Favourite />
+                    <User /> 
+                    <ShoppingCart /> 
+                                   
+                </div>
+            </div>
+        </header>
   );
-}
+}   
 
 export default Header;

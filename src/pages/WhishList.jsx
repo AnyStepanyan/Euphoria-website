@@ -1,15 +1,19 @@
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { createUseStyles } from "react-jss";
-import CartContext from "../components/Context";
-import { useContext } from "react";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import IncrementDecrement from '../components/IncrementDecrement';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { createUseStyles } from 'react-jss';
+import CartContext  from '../components/Context';
+import { useContext } from 'react';
 import { database } from "../helpers/db.js";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { IconButton } from "@mui/material";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { ReactComponent as EmptyWhishListImage } from "../Assets/images/emptyWhishList.svg";
-import PurpleButtons from "../components/PurpleButtons";
+import PurpleButtons from '../components/PurpleButtons';
 import { Link } from "react-router-dom";
+import {doc, setDoc } from "firebase/firestore";
 
 const useStyles = createUseStyles({
   addToCartWrapper: {
@@ -81,39 +85,57 @@ function WhishList() {
   const [products, setProducts] = useState([]);
   const classes = useStyles();
 
-  const handleToggleCart = (productId) => {
-    setCart((previousToCart) => {
-      if (previousToCart.includes(productId)) {
-        return previousToCart;
-      } else {
-        return [...previousToCart, productId];
+    const handleToggleCart = (productId) => {
+        setCart((previousToCart) => {
+          if (previousToCart.includes(productId)) {
+            return previousToCart;
+          } else {
+            return [...previousToCart, productId];
+        }})
       }
-    });
-  };
 
-  const fetchProducts = async () => {
-    await getDocs(collection(database, "products")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setProducts(newData);
-    });
-  };
+    const fetchProducts = async () => {
+        await getDocs(collection(database, 'products')).then((querySnapshot) => {
+          const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setProducts(newData);
+        });
+      };
 
-  let productsForCart = products.filter((product) => {
-    if (favorites.includes(product.id)) {
-      return product;
-    }
-  });
+    //   const addCart= async () => { 
+    //     try {
+    //         const docRef = doc(database, "users", 'cart')
+    //         setDoc(docRef, {cartItem: cart}, {merge: true})
+    //         console.log("Document written with ID: ", docRef.id);
+    //       } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //       }
+    // }
+
+   
+     let productsForCart = products.filter((product)=>{
+          if(favorites.includes(product.id)){
+              return product
+          }
+      } )
+    
+      // useEffect(() => {
+      //   fetchProducts();
+      //   addCart()
+      // }, [cart]);
+  
+      const deleteProduct = (productId) => {
+          return (
+            setFavorites(favorites.filter((id) => id !== productId))
+          ) 
+  };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  const deleteProduct = (productId) => {
-    return setFavorites(favorites.filter((id) => id !== productId));
-  };
 
   return (
     <>
@@ -169,7 +191,7 @@ function WhishList() {
             </div>
 
             <div className={classes.button}>
-              <Link to="/womenProducts">
+              <Link style={{textDecoration: 'none'}} to="/womenProducts">
                 <PurpleButtons value="continue shopping" />
               </Link>
             </div>
