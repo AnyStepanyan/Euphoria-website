@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import fire from "../../helpers/db";
 import {
   Container,
   CssBaseline,
@@ -21,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import CartContext from "../Context";
 import { useContext } from 'react';
 // import {ScaleLoader} from "react-spinners";
+import { auth } from "../../helpers/db";
 
 
 const Login = (props) => {
@@ -32,7 +32,6 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const auth = getAuth();
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -45,22 +44,23 @@ const Login = (props) => {
   };
   const handlerLogin = () => {
     setLoading(true);
-            signInWithEmailAndPassword( auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                const data = {
-                    userId : user.uid,
-                    email: user.email
-                }
-                localStorage.setItem("user", JSON.stringify(data));
-                const storage = localStorage.getItem("user");
-                const loggedInUser = storage !== null ? JSON.parse(storage) : null;
-                props.loggedIn(loggedInUser);
-                setLoading(false);
-            }). catch(error => {
-                    toast.error(error.message);
-                    setLoading(false);
-            })
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const data = {
+          userId: user.uid,
+          email: user.email,
+        };
+        localStorage.setItem("user", JSON.stringify(data));
+        const storage = localStorage.getItem("user");
+        const loggedInUser = storage !== null ? JSON.parse(storage) : null;
+        props.loggedIn(loggedInUser);
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+      });
   };
 
   const storage = localStorage.getItem("user");
@@ -129,7 +129,7 @@ const Login = (props) => {
                 className={classes.submit}
 
               >
-                Sign In
+                {loading ? "Loading..." : "Sign In"}
               </Button>
               <Grid container>
                 <Grid item>

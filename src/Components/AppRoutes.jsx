@@ -3,7 +3,6 @@ import WomenProductList from "./WomenProductList";
 import MenProductList from "./MenProductList";
 import AddProductPage from "./AddProductPage";
 import { Authentication } from "./Authentication/Authentication";
-import DetailPage from "./Details/DetailPage";
 import Main from "./Main";
 import AddToCart from "../pages/AddToCart";
 import WhishList from "../pages/WhishList";
