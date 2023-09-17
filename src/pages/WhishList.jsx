@@ -191,7 +191,7 @@ function WhishList() {
             </div>
 
             <div className={classes.button}>
-              <Link style={{textDecoration: 'none'}} to="/womenProducts">
+              <Link style={{textDecoration: 'none'}} to="/">
                 <PurpleButtons value="continue shopping" />
               </Link>
             </div>

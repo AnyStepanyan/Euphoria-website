@@ -258,7 +258,7 @@ function AddToCart() {
             </p>
             <p>Add something to make it happy!</p>
             <div className={classes.button}>
-              <Link style={{ textDecoration: "none" }} to="/womenProducts">
+              <Link style={{ textDecoration: "none" }} to="/">
                 <PurpleButtons value="continue shopping" />
               </Link>
             </div>

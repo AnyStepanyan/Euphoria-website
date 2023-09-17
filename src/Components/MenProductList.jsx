@@ -166,8 +166,8 @@ const MenProductList = () => {
   const { run: onApplyFilter } = useRequest(
     async ({ minPrice, maxPrice }) => {
       const snapshot = await firestore
+      .collection("products")
         .where("gender", "==", "male")
-        .collection("products")
         .where("price", ">=", minPrice)
         .where("price", "<=", maxPrice)
         .get();

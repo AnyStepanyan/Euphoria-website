@@ -101,7 +101,7 @@ function DemoCarousel() {
                     <ButtonShopNow value='Shop Women' />
                     </Link>                </div>
 
-                <Banner1 className={classes.banner} />
+                    <Banner1 className={classes.banner} />
             </div>
         </Carousel>
     )

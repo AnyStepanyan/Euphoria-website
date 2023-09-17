@@ -9,7 +9,7 @@ const useStyles = createUseStyles({
     fontSize: 21,
     fontWeight: 500,
     margin: {
-      left: 87,
+      left: 30,
     },
     "@media (max-width: 1100px)": {
       margin: { left: 40 },
@@ -115,6 +115,13 @@ function NavBar({ isBurgerOpen }) {
           }`}
         >
           <Link to="/womenProducts">Women</Link>
+        </li>
+        <li
+          className={`${classes.liClass} ${
+            splitLocation[1] === "addProduct" ? classes.active : ""
+          }`}
+        >
+          <Link to="/addProduct">Add</Link>
         </li>
       </ul>
     </nav>
