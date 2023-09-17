@@ -65,8 +65,8 @@ function NavBarMobile({ onClick, isBurgerOpen }) {
     return (
         <nav className={`${classes.nav}  ${isBurgerOpen ? classes.displayFlex : ''}`}>
             <ul className={classes.navList}>
-                <li onClick={onClick}> <Link to="/shop">Shop</Link></li>
-                <li onClick={onClick}><Link to="#">Men</Link></li>
+                <li onClick={onClick}> <Link to="/">Shop</Link></li>
+                <li onClick={onClick}><Link to="/menProducts">Men</Link></li>
                 <li onClick={onClick}>   <Link to="/womenProducts" >Women</Link></li>
             </ul>
             <CloseIcon onClick={onClick} sx={{

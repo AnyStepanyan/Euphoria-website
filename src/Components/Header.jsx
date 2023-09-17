@@ -46,6 +46,7 @@ const useStyles = createUseStyles({
     margin: {
       top: 23,
       right: 10,
+      left:60
     },
   },
 });

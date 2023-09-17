@@ -84,7 +84,7 @@ export default function Checkout() {
                   textAlign: "center",
                   padding: 20,
                 }}
-                to="/womenProducts"
+                to="/"
               >
                 <PurpleButtons value="continue shopping" />
               </Link>
